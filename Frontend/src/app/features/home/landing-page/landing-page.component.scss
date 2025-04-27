@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-mdc-card {
+  transition: transform 0.2s ease-in-out;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+footer {
+  margin-top: auto;
+}

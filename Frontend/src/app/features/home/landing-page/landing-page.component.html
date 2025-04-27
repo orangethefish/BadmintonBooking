@@ -1,0 +1,70 @@
+<!-- Header -->
+<header class="bg-white shadow-sm">
+  <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <a href="/" class="text-green-600 font-bold text-xl">SmashCourt</a>
+    <div class="flex gap-4">
+      <button mat-button color="primary" routerLink="/auth/login">Login</button>
+      <button mat-raised-button color="primary" routerLink="/auth/register">Sign Up</button>
+    </div>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="bg-green-600 text-white py-16">
+  <div class="container mx-auto px-4 text-center">
+    <h1 class="text-4xl font-bold mb-4">Book Your Perfect Court</h1>
+    <p class="text-xl mb-8">Find and book badminton courts near you</p>
+    <button mat-raised-button color="accent" (click)="navigateToBooking()" class="text-lg px-8 py-2">
+      Book Now
+    </button>
+  </div>
+</section>
+
+<!-- Featured Facilities -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12">Featured Facilities</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <mat-card *ngFor="let facility of facilities" class="h-full">
+        <img mat-card-image [src]="facility.imageUrl" [alt]="facility.name" class="h-48 w-full object-cover">
+        <mat-card-content class="p-4">
+          <h3 class="text-xl font-semibold mb-2">{{facility.name}}</h3>
+          <p class="text-gray-600 mb-4">{{facility.description}}</p>
+          <button mat-button color="primary" (click)="viewDetails(facility.id)">
+            View Details
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-8">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-lg font-semibold mb-4">About Us</h3>
+        <p class="text-gray-400">Your one-stop platform for booking badminton courts.</p>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-white">Facilities</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-white">Booking</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+        <ul class="space-y-2 text-gray-400">
+          <li>Email: info@smashcourt.com</li>
+          <li>Phone: (123) 456-7890</li>
+          <li>Address: 123 Court Street</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
