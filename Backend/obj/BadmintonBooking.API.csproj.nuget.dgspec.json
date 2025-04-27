@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/orange/Documents/BadmintonBooking/Backend/BadmintonBooking.API.csproj": {}
+    "/home/orange/Documents/badmintonbooking/Backend/BadmintonBooking.API.csproj": {}
   },
   "projects": {
-    "/home/orange/Documents/BadmintonBooking/Backend/BadmintonBooking.API.csproj": {
+    "/home/orange/Documents/badmintonbooking/Backend/BadmintonBooking.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/orange/Documents/BadmintonBooking/Backend/BadmintonBooking.API.csproj",
+        "projectUniqueName": "/home/orange/Documents/badmintonbooking/Backend/BadmintonBooking.API.csproj",
         "projectName": "BadmintonBooking.API",
-        "projectPath": "/home/orange/Documents/BadmintonBooking/Backend/BadmintonBooking.API.csproj",
+        "projectPath": "/home/orange/Documents/badmintonbooking/Backend/BadmintonBooking.API.csproj",
         "packagesPath": "/home/orange/.nuget/packages/",
-        "outputPath": "/home/orange/Documents/BadmintonBooking/Backend/obj/",
+        "outputPath": "/home/orange/Documents/badmintonbooking/Backend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/orange/.nuget/NuGet/NuGet.Config"
