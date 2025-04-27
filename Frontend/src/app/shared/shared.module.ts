@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+// Material Module
+import { MaterialModule } from './material.module';
+
 // PrimeNG Modules
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -28,11 +31,13 @@ const primeNgModules = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MaterialModule,
     ...primeNgModules
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
+    MaterialModule,
     ...primeNgModules
   ],
   providers: [MessageService]

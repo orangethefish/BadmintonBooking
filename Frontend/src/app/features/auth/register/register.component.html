@@ -1,0 +1,69 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px;">
+                <div class="text-center mb-5">
+                    <div class="text-900 text-3xl font-medium mb-3">Welcome!</div>
+                    <span class="text-600 font-medium">Sign up to continue</span>
+                </div>
+
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                    <div class="flex flex-column gap-3">
+                        <div class="flex flex-column gap-2">
+                            <label for="username" class="block text-900 text-xl font-medium mb-2">Username</label>
+                            <input id="username" type="text" pInputText formControlName="username" 
+                                class="p-inputtext-lg" placeholder="Enter your username">
+                            <small class="p-error" *ngIf="registerForm.get('username')?.errors?.['required'] && registerForm.get('username')?.touched">
+                                Username is required
+                            </small>
+                            <small class="p-error" *ngIf="registerForm.get('username')?.errors?.['minlength'] && registerForm.get('username')?.touched">
+                                Username must be at least 3 characters
+                            </small>
+                        </div>
+
+                        <div class="flex flex-column gap-2">
+                            <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
+                            <input id="email" type="email" pInputText formControlName="email" 
+                                class="p-inputtext-lg" placeholder="Enter your email">
+                            <small class="p-error" *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">
+                                Email is required
+                            </small>
+                            <small class="p-error" *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched">
+                                Please enter a valid email address
+                            </small>
+                        </div>
+
+                        <div class="flex flex-column gap-2">
+                            <label for="password" class="block text-900 text-xl font-medium mb-2">Password</label>
+                            <p-password id="password" formControlName="password" 
+                                [toggleMask]="true" styleClass="p-password-lg w-full"
+                                [feedback]="true" placeholder="Enter your password"></p-password>
+                            <small class="p-error" *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched">
+                                Password is required
+                            </small>
+                            <small class="p-error" *ngIf="registerForm.get('password')?.errors?.['minlength'] && registerForm.get('password')?.touched">
+                                Password must be at least 6 characters
+                            </small>
+                        </div>
+
+                        <div class="flex flex-column gap-2">
+                            <label for="confirmPassword" class="block text-900 text-xl font-medium mb-2">Confirm Password</label>
+                            <p-password id="confirmPassword" formControlName="confirmPassword" 
+                                [toggleMask]="true" styleClass="p-password-lg w-full"
+                                [feedback]="false" placeholder="Confirm your password"></p-password>
+                            <small class="p-error" *ngIf="registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched">
+                                Passwords do not match
+                            </small>
+                        </div>
+
+                        <p-button [loading]="loading" label="Sign Up" styleClass="w-full" [disabled]="registerForm.invalid" type="submit"></p-button>
+
+                        <div class="text-center">
+                            Already have an account? <a routerLink="/auth/login" class="font-medium text-primary">Sign in</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
