@@ -2,10 +2,11 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using BadmintonBooking.API.Data;
 using BadmintonBooking.API.Models;
+using BadmintonBooking.API.Services.Interfaces;
 
 namespace BadmintonBooking.API.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly ApplicationDbContext _context;
         private readonly TokenService _tokenService;
@@ -16,41 +17,42 @@ namespace BadmintonBooking.API.Services
             _tokenService = tokenService;
         }
 
-        public async Task<AuthResponse> LoginAsync(LoginRequest request)
+        public async Task<AuthResult> LoginAsync(string email, string password)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Username == request.Username);
+                .FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
-                throw new Exception("User not found");
+                return new AuthResult { Success = false, Error = "User not found" };
 
-            var passwordHash = HashPassword(request.Password);
+            var passwordHash = HashPassword(password);
             if (user.PasswordHash != passwordHash)
-                throw new Exception("Invalid password");
+                return new AuthResult { Success = false, Error = "Invalid password" };
 
             var token = _tokenService.GenerateJwtToken(user);
 
-            return new AuthResponse
+            return new AuthResult
             {
+                Success = true,
                 Token = token,
                 Username = user.Username,
                 Role = user.Role
             };
         }
 
-        public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
+        public async Task<AuthResult> RegisterAsync(RegisterModel model)
         {
-            if (await _context.Users.AnyAsync(u => u.Username == request.Username))
-                throw new Exception("Username already exists");
+            if (await _context.Users.AnyAsync(u => u.Username == model.Username))
+                return new AuthResult { Success = false, Error = "Username already exists" };
 
-            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-                throw new Exception("Email already exists");
+            if (await _context.Users.AnyAsync(u => u.Email == model.Email))
+                return new AuthResult { Success = false, Error = "Email already exists" };
 
             var user = new User
             {
-                Username = request.Username,
-                Email = request.Email,
-                PasswordHash = HashPassword(request.Password),
+                Username = model.Username,
+                Email = model.Email,
+                PasswordHash = HashPassword(model.Password),
                 Role = "User",
                 CreatedAt = DateTime.UtcNow
             };
@@ -60,8 +62,9 @@ namespace BadmintonBooking.API.Services
 
             var token = _tokenService.GenerateJwtToken(user);
 
-            return new AuthResponse
+            return new AuthResult
             {
+                Success = true,
                 Token = token,
                 Username = user.Username,
                 Role = user.Role
@@ -75,6 +78,13 @@ namespace BadmintonBooking.API.Services
                 var hashedBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return Convert.ToBase64String(hashedBytes);
             }
+        }
+
+        public async Task<bool> LogoutAsync(string userId)
+        {
+            // In a real application, you might want to invalidate the token
+            // This could involve adding it to a blacklist or updating the user's token version
+            return true;
         }
     }
 }

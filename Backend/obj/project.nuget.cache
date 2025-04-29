@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KVp9xAjL9kgZdebC0rinili8lB41parP6KJi1k4ZJCyd0T7R1KfnODUAyEsY5BZFvP+CgC58cixSmpGxR/Twug==",
+  "dgSpecHash": "cQAmwXjSekb4bFD7Al4ppNRFaOH8wBjrXKpu5SyBiVXUpR/9SIFowrF8Ief3f/X8yIuA2jnus149yiEB94s56g==",
   "success": true,
-  "projectFilePath": "/home/orange/Documents/BadmintonBooking/Backend/BadmintonBooking.API.csproj",
+  "projectFilePath": "/home/orange/Documents/badmintonbooking/Backend/BadmintonBooking.API.csproj",
   "expectedPackageFiles": [
     "/home/orange/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/orange/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.0/microsoft.aspnetcore.authentication.jwtbearer.8.0.0.nupkg.sha512",
