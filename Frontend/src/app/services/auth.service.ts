@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthResult, LoginRequest, RegisterRequest, User } from '../models/auth.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,10 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<AuthResult | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {
-    const user = localStorage.getItem('currentUser');
-    if (user) {
-      this.currentUserSubject.next(JSON.parse(user));
+  constructor(private http: HttpClient, private router: Router) {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      this.currentUserSubject.next(JSON.parse(storedUser));
     }
   }
 
@@ -56,6 +57,22 @@ export class AuthService {
       observer.next({ message: 'Logged out successfully' });
       observer.complete();
     });
+  }
+
+  isLoggedIn(): boolean {
+    const currentUser = this.currentUserSubject.value;
+    if (!currentUser || !currentUser.token) {
+      return false;
+    }
+    
+    // You could add token expiration check here if your token includes exp claim
+    // For now, we'll just check if the token exists
+    return true;
+  }
+  
+  getToken(): string {
+    const currentUser = this.currentUserSubject.value;
+    return currentUser?.token || '';
   }
 
   get currentUserValue(): AuthResult | null {

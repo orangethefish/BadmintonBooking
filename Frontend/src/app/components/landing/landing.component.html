@@ -2,8 +2,14 @@
   <nav class="bg-white p-4 flex justify-between items-center">
     <h1 class="text-xl font-bold text-green-600">SmashCourt</h1>
     <div>
-      <a routerLink="/login" class="text-gray-600 hover:text-gray-800 mr-4">Login</a>
-      <a routerLink="/signup" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Sign Up</a>
+      <ng-container *ngIf="!authService.isLoggedIn(); else loggedInNav">
+        <a routerLink="/login" class="text-gray-600 hover:text-gray-800 mr-4">Login</a>
+        <a routerLink="/signup" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Sign Up</a>
+      </ng-container>
+      <ng-template #loggedInNav>
+        <a routerLink="/dashboard" class="text-gray-600 hover:text-gray-800 mr-4">Dashboard</a>
+        <button (click)="authService.logout()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Logout</button>
+      </ng-template>
     </div>
   </nav>
 

@@ -46,8 +46,8 @@ export class SignupComponent {
         next: (result) => {
           this.isLoading = false;
           if (result.success) {
-            // Navigate to home page after successful registration
-            this.router.navigate(['/']);
+            // Navigate to dashboard after successful registration
+            this.router.navigate(['/dashboard']);
           } else {
             this.errorMessage = result.error || 'Registration failed';
           }
