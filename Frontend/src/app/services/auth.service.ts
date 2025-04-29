@@ -3,17 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-interface AuthResponse {
+interface AuthResult {
+  success: boolean;
   token: string;
   username: string;
   role: string;
+  error?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<AuthResponse | null>(null);
+  private currentUserSubject = new BehaviorSubject<AuthResult | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient) {
@@ -23,8 +25,8 @@ export class AuthService {
     }
   }
 
-  login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, { email, password })
+  login(email: string, password: string): Observable<AuthResult> {
+    return this.http.post<AuthResult>(`${environment.apiUrl}/auth/login`, { email, password })
       .pipe(
         tap(response => {
           localStorage.setItem('currentUser', JSON.stringify(response));
@@ -33,8 +35,8 @@ export class AuthService {
       );
   }
 
-  register(username: string, email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/register`, { username, email, password })
+  register(username: string, email: string, password: string): Observable<AuthResult> {
+    return this.http.post<AuthResult>(`${environment.apiUrl}/auth/register`, { username, email, password })
       .pipe(
         tap(response => {
           localStorage.setItem('currentUser', JSON.stringify(response));
@@ -43,12 +45,27 @@ export class AuthService {
       );
   }
 
-  logout(): void {
+  logout(): Observable<any> {
+    // Call the backend logout endpoint if user is logged in
+    if (this.currentUserValue) {
+      return this.http.post<any>(`${environment.apiUrl}/auth/logout`, {}).pipe(
+        tap(() => {
+          localStorage.removeItem('currentUser');
+          this.currentUserSubject.next(null);
+        })
+      );
+    }
+    
+    // If no user is logged in, just clear local storage
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    return new Observable(observer => {
+      observer.next({ message: 'Logged out successfully' });
+      observer.complete();
+    });
   }
 
-  get currentUserValue(): AuthResponse | null {
+  get currentUserValue(): AuthResult | null {
     return this.currentUserSubject.value;
   }
 }

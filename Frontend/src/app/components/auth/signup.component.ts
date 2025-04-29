@@ -2,20 +2,26 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
   signupForm: FormGroup;
 
+  errorMessage: string = '';
+  isLoading: boolean = false;
+
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.signupForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -26,8 +32,27 @@ export class SignupComponent {
 
   onSubmit() {
     if (this.signupForm.valid) {
-      // TODO: Implement signup logic
-      console.log(this.signupForm.value);
+      this.isLoading = true;
+      this.errorMessage = '';
+      
+      const { username, email, password } = this.signupForm.value;
+      
+      this.authService.register(username, email, password).subscribe({
+        next: (result) => {
+          this.isLoading = false;
+          if (result.success) {
+            // Navigate to home page after successful registration
+            this.router.navigate(['/']);
+          } else {
+            this.errorMessage = result.error || 'Registration failed';
+          }
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error?.error || error.message || 'An error occurred during registration';
+          console.error('Registration error:', error);
+        }
+      });
     }
   }
 }
