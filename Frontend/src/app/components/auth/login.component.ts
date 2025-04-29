@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginRequest, AuthResult } from '../../models/auth.model';
 
 @Component({
   selector: 'app-login',
@@ -34,9 +35,12 @@ export class LoginComponent {
       this.isLoading = true;
       this.errorMessage = '';
       
-      const { email, password } = this.loginForm.value;
+      const loginRequest: LoginRequest = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password
+      };
       
-      this.authService.login(email, password).subscribe({
+      this.authService.login(loginRequest.email, loginRequest.password).subscribe({
         next: (result) => {
           this.isLoading = false;
           if (result.success) {

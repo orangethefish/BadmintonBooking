@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { RegisterRequest, AuthResult } from '../../models/auth.model';
 
 @Component({
   selector: 'app-signup',
@@ -35,9 +36,13 @@ export class SignupComponent {
       this.isLoading = true;
       this.errorMessage = '';
       
-      const { username, email, password } = this.signupForm.value;
+      const registerRequest: RegisterRequest = {
+        username: this.signupForm.value.username,
+        email: this.signupForm.value.email,
+        password: this.signupForm.value.password
+      };
       
-      this.authService.register(username, email, password).subscribe({
+      this.authService.register(registerRequest.username, registerRequest.email, registerRequest.password).subscribe({
         next: (result) => {
           this.isLoading = false;
           if (result.success) {
