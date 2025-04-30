@@ -1,19 +1,28 @@
 import { Routes } from '@angular/router';
-import { LandingComponent } from './components/landing/landing.component';
-import { LoginComponent } from './components/auth/login.component';
-import { SignupComponent } from './components/auth/signup.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-  { 
-    path: 'dashboard', 
-    component: DashboardComponent,
-    canActivate: [authGuard]
+  {
+    path: '',
+    loadChildren: () => import('./features/home/home.routes').then(m => m.HOME_ROUTES)
   },
-  // Redirect any unknown paths to the landing page
-  { path: '**', redirectTo: '' }
+  {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
+  },
+  {
+    path: 'facility',
+    loadChildren: () => import('./features/facility/facility.routes').then(m => m.FACILITY_ROUTES)
+  },
+  {
+    path: 'court',
+    loadChildren: () => import('./features/court/court.routes').then(m => m.COURT_ROUTES)
+  },
+  // {
+  //   path: 'booking',
+  //   loadChildren: () => import('./features/booking/booking.routes').then(m => m.BOOKING_ROUTES)
+  // },
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];

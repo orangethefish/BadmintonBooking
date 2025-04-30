@@ -26,13 +26,16 @@ export const authInterceptor: HttpInterceptorFn = (
   if (token) {
     const authReq = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
     });
     
     // Return the cloned request with the token
     return next(authReq).pipe(
       catchError((error) => {
+        console.error('Request failed:', error);
         // Handle 401 Unauthorized errors
         if (error instanceof HttpErrorResponse && error.status === 401) {
           // Clear local storage and redirect to landing page
@@ -44,9 +47,18 @@ export const authInterceptor: HttpInterceptorFn = (
     );
   }
   
-  // If no token, just forward the original request
-  return next(req).pipe(
+  // If no token, add default headers
+  const defaultReq = req.clone({
+    setHeaders: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  });
+  
+  // Forward the request with default headers
+  return next(defaultReq).pipe(
     catchError((error) => {
+      console.error('Request failed:', error);
       // Handle 401 Unauthorized errors
       if (error instanceof HttpErrorResponse && error.status === 401) {
         // Clear local storage and redirect to landing page
