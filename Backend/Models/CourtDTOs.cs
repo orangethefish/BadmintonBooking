@@ -2,28 +2,31 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BadmintonBooking.API.Models
 {
-    public class Court
+    public class CreateCourtRequest
     {
-        [Key]
-        public int Id { get; set; }
-        
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
         
         [Required]
         public int FacilityId { get; set; }
-        public Facility Facility { get; set; }
-        
+    }
+
+    public class UpdateCourtRequest
+    {
         [Required]
+        [MaxLength(50)]
+        public string Name { get; set; }
+    }
+
+    public class CourtResponse
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int FacilityId { get; set; }
         public int OwnerId { get; set; }
-        public User Owner { get; set; }
-        
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        
-        public ICollection<Booking> Bookings { get; set; }
-        public ICollection<PricingConfiguration> PricingConfigurations { get; set; }
     }
 } 

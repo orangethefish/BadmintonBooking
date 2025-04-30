@@ -19,41 +19,62 @@ namespace BadmintonBooking.API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<AuthResult>> Login([FromBody] LoginRequest request)
         {
-            var result = await _authService.LoginAsync(request.Email, request.Password);
-            if (!result.Success)
-                return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var result = await _authService.LoginAsync(request.Email, request.Password);
+                if (!result.Success)
+                    return BadRequest(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<AuthResult>> Register([FromBody] RegisterRequest request)
         {
-            var model = new RegisterModel
+            try
             {
-                Username = request.Username,
-                Email = request.Email,
-                Password = request.Password
-            };
+                var model = new RegisterModel
+                {
+                    Username = request.Username,
+                    Email = request.Email,
+                    Password = request.Password
+                };
 
-            var result = await _authService.RegisterAsync(model);
-            if (!result.Success)
-                return BadRequest(result);
-            return Ok(result);
+                var result = await _authService.RegisterAsync(model);
+                if (!result.Success)
+                    return BadRequest(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         [Authorize]
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
-            var userId = User.FindFirst("sub")?.Value;
-            if (string.IsNullOrEmpty(userId))
-                return BadRequest(new { message = "User not found" });
+            try
+            {
+                var userId = User.FindFirst("sub")?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return BadRequest(new { message = "User not found" });
 
-            var result = await _authService.LogoutAsync(userId);
-            if (!result)
-                return BadRequest(new { message = "Logout failed" });
+                var result = await _authService.LogoutAsync(userId);
+                if (!result)
+                    return BadRequest(new { message = "Logout failed" });
 
-            return Ok(new { message = "Logged out successfully" });
+                return Ok(new { message = "Logged out successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
     }
 }

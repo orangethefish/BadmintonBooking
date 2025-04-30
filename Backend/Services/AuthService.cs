@@ -10,65 +10,99 @@ namespace BadmintonBooking.API.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly TokenService _tokenService;
+        private readonly ILoggerService _logger;
 
-        public AuthService(ApplicationDbContext context, TokenService tokenService)
+        public AuthService(ApplicationDbContext context, TokenService tokenService, ILoggerService logger)
         {
             _context = context;
             _tokenService = tokenService;
+            _logger = logger;
         }
 
         public async Task<AuthResult> LoginAsync(string email, string password)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == email);
-
-            if (user == null)
-                return new AuthResult { Success = false, Error = "User not found" };
-
-            var passwordHash = HashPassword(password);
-            if (user.PasswordHash != passwordHash)
-                return new AuthResult { Success = false, Error = "Invalid password" };
-
-            var token = _tokenService.GenerateJwtToken(user);
-
-            return new AuthResult
+            try
             {
-                Success = true,
-                Token = token,
-                Username = user.Username,
-                Role = user.Role
-            };
+                _logger.Info($"Attempting login for user with email: {email}");
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Email == email);
+
+                if (user == null)
+                {
+                    _logger.Warning($"Login failed: User not found for email: {email}");
+                    return new AuthResult { Success = false, Error = "User not found" };
+                }
+
+                var passwordHash = HashPassword(password);
+                if (user.PasswordHash != passwordHash)
+                {
+                    _logger.Warning($"Login failed: Invalid password for user: {user.Username}");
+                    return new AuthResult { Success = false, Error = "Invalid password" };
+                }
+
+                var token = _tokenService.GenerateJwtToken(user);
+                _logger.Info($"Login successful for user: {user.Username}");
+
+                return new AuthResult
+                {
+                    Success = true,
+                    Token = token,
+                    Username = user.Username,
+                    Role = user.Role
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Login error for email: {email}", ex);
+                return new AuthResult { Success = false, Error = $"An error occurred: {ex.Message}" };
+            }
         }
 
         public async Task<AuthResult> RegisterAsync(RegisterModel model)
         {
-            if (await _context.Users.AnyAsync(u => u.Username == model.Username))
-                return new AuthResult { Success = false, Error = "Username already exists" };
-
-            if (await _context.Users.AnyAsync(u => u.Email == model.Email))
-                return new AuthResult { Success = false, Error = "Email already exists" };
-
-            var user = new User
+            try
             {
-                Username = model.Username,
-                Email = model.Email,
-                PasswordHash = HashPassword(model.Password),
-                Role = "User",
-                CreatedAt = DateTime.UtcNow
-            };
+                _logger.Info($"Attempting registration for user: {model.Username}");
+                if (await _context.Users.AnyAsync(u => u.Username == model.Username))
+                {
+                    _logger.Warning($"Registration failed: Username already exists: {model.Username}");
+                    return new AuthResult { Success = false, Error = "Username already exists" };
+                }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+                if (await _context.Users.AnyAsync(u => u.Email == model.Email))
+                {
+                    _logger.Warning($"Registration failed: Email already exists: {model.Email}");
+                    return new AuthResult { Success = false, Error = "Email already exists" };
+                }
 
-            var token = _tokenService.GenerateJwtToken(user);
+                var user = new User
+                {
+                    Username = model.Username,
+                    Email = model.Email,
+                    PasswordHash = HashPassword(model.Password),
+                    Role = "User",
+                    CreatedAt = DateTime.UtcNow
+                };
 
-            return new AuthResult
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                var token = _tokenService.GenerateJwtToken(user);
+                _logger.Info($"Registration successful for user: {user.Username}");
+
+                return new AuthResult
+                {
+                    Success = true,
+                    Token = token,
+                    Username = user.Username,
+                    Role = user.Role
+                };
+            }
+            catch (Exception ex)
             {
-                Success = true,
-                Token = token,
-                Username = user.Username,
-                Role = user.Role
-            };
+                _logger.Error($"Registration error for user: {model.Username}", ex);
+                return new AuthResult { Success = false, Error = $"An error occurred: {ex.Message}" };
+            }
         }
 
         private string HashPassword(string password)
@@ -82,9 +116,18 @@ namespace BadmintonBooking.API.Services
 
         public async Task<bool> LogoutAsync(string userId)
         {
-            // In a real application, you might want to invalidate the token
-            // This could involve adding it to a blacklist or updating the user's token version
-            return true;
+            try
+            {
+                _logger.Info($"User logout: {userId}");
+                // In a real application, you might want to invalidate the token
+                // This could involve adding it to a blacklist or updating the user's token version
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Logout error for user: {userId}", ex);
+                return false;
+            }
         }
     }
 }

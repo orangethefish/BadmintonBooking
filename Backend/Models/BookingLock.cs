@@ -12,6 +12,10 @@ namespace BadmintonBooking.API.Models
         public Court Court { get; set; }
         
         [Required]
+        public int UserId { get; set; }
+        public User User { get; set; }
+        
+        [Required]
         public DateTime StartTime { get; set; }
         
         [Required]
