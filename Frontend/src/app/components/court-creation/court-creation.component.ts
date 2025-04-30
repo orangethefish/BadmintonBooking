@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FacilityService } from '../../services/facility.service';
 import { CourtService } from '../../services/court.service';
@@ -7,7 +8,9 @@ import { CourtService } from '../../services/court.service';
 @Component({
   selector: 'app-court-creation',
   templateUrl: './court-creation.component.html',
-  styleUrls: ['./court-creation.component.scss']
+  styleUrls: ['./court-creation.component.scss'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class CourtCreationComponent implements OnInit {
   facilityId: number | null = null;
@@ -32,16 +35,17 @@ export class CourtCreationComponent implements OnInit {
   async ngOnInit() {
     const facilityId = this.route.snapshot.queryParams['facilityId'];
     if (!facilityId) {
-      this.router.navigate(['/create-facility']);
+      this.router.navigate(['/facility/create']);
       return;
     }
 
     this.facilityId = facilityId;
     try {
       this.facility = await this.facilityService.getFacility(facilityId).toPromise();
-      this.courts = await this.courtService.getCourts(facilityId).toPromise();
+      const courts = await this.courtService.getCourts(facilityId).toPromise();
+      this.courts = courts || [];
     } catch (err) {
-      this.router.navigate(['/create-facility']);
+      this.router.navigate(['/facility/create']);
     }
   }
 

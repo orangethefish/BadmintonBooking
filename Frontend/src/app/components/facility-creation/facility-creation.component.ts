@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FacilityService } from '../../services/facility.service';
 
 @Component({
   selector: 'app-facility-creation',
   templateUrl: './facility-creation.component.html',
-  styleUrls: ['./facility-creation.component.scss']
+  styleUrls: ['./facility-creation.component.scss'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class FacilityCreationComponent implements OnInit {
   facilityForm: FormGroup;
