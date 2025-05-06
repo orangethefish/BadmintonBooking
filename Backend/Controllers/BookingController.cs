@@ -1,3 +1,4 @@
+using System;
 using BadmintonBooking.API.Models;
 using BadmintonBooking.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ namespace BadmintonBooking.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookingResponseDto>>> GetUserBookings()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var bookings = await _bookingService.GetUserBookingsAsync(userId);
             
             var bookingDtos = bookings.Select(b => new BookingResponseDto
@@ -45,7 +46,7 @@ namespace BadmintonBooking.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BookingResponseDto>> GetBooking(int id)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var booking = await _bookingService.GetBookingByIdAsync(id);
 
             if (booking == null)
@@ -80,7 +81,7 @@ namespace BadmintonBooking.API.Controllers
         [HttpPost]
         public async Task<ActionResult<BookingResponseDto>> CreateBooking(BookingRequestDto bookingDto)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             // Validate booking time
             if (bookingDto.StartTime >= bookingDto.EndTime)
@@ -146,7 +147,7 @@ namespace BadmintonBooking.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBooking(int id, BookingRequestDto bookingDto)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var existingBooking = await _bookingService.GetBookingByIdAsync(id);
 
             if (existingBooking == null)
@@ -197,7 +198,7 @@ namespace BadmintonBooking.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> CancelBooking(int id)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var existingBooking = await _bookingService.GetBookingByIdAsync(id);
 
             if (existingBooking == null)
@@ -283,7 +284,7 @@ namespace BadmintonBooking.API.Controllers
         [HttpPost("lock")]
         public async Task<ActionResult<BookingLockResponseDto>> CreateBookingLock(BookingLockRequestDto lockDto)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             // Validate lock time
             if (lockDto.StartTime >= lockDto.EndTime)

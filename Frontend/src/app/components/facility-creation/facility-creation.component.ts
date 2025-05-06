@@ -39,7 +39,7 @@ export class FacilityCreationComponent implements OnInit {
       try {
         const facility = await this.facilityService.createFacility(this.facilityForm.value).toPromise();
         // Navigate to court creation with the new facility ID
-        this.router.navigate(['/create-court'], { queryParams: { facilityId: facility.id }});
+        this.router.navigate(['court/create'], { queryParams: { facilityId: facility.id }});
       } catch (err: any) {
         this.error = err.error?.message || 'Failed to create facility';
       } finally {

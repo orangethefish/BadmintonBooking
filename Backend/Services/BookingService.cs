@@ -1,3 +1,4 @@
+using System;
 using BadmintonBooking.API.Data;
 using BadmintonBooking.API.Models;
 using BadmintonBooking.API.Services.Interfaces;
@@ -37,7 +38,7 @@ namespace BadmintonBooking.API.Services
             }
         }
 
-        public async Task<IEnumerable<Booking>> GetUserBookingsAsync(int userId)
+        public async Task<IEnumerable<Booking>> GetUserBookingsAsync(Guid userId)
         {
             try
             {
@@ -277,7 +278,7 @@ namespace BadmintonBooking.API.Services
             }
         }
 
-        public async Task<BookingLock> CreateBookingLockAsync(int courtId, int userId, DateTime startTime, DateTime endTime)
+        public async Task<BookingLock> CreateBookingLockAsync(int courtId, Guid userId, DateTime startTime, DateTime endTime)
         {
             try
             {

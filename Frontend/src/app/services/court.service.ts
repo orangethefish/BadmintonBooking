@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class CourtService {
-  private apiUrl = `${environment.apiUrl}/courts`;
+  private apiUrl = `${environment.apiUrl}/court`;
 
   constructor(private http: HttpClient) {}
 
@@ -28,6 +28,6 @@ export class CourtService {
   }
 
   getCourts(facilityId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/facilities/${facilityId}/courts`);
+    return this.http.get<any[]>(`${this.apiUrl}?facilityId=${facilityId}`);
   }
 } 

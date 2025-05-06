@@ -25,7 +25,7 @@ namespace BadmintonBooking.API.Models
         public DateTime? UpdatedAt { get; set; }
         
         [Required]
-        public int OwnerId { get; set; }
+        public Guid OwnerId { get; set; }
         public User Owner { get; set; }
         
         public ICollection<Court> Courts { get; set; }

@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using BadmintonBooking.API.Data;
@@ -77,6 +78,7 @@ namespace BadmintonBooking.API.Services
 
                 var user = new User
                 {
+                    Id = Guid.NewGuid(),
                     Username = model.Username,
                     Email = model.Email,
                     PasswordHash = HashPassword(model.Password),
