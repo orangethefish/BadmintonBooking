@@ -14,7 +14,15 @@
     </div>
 
     <div class="mb-8">
-      <h3 class="text-lg font-semibold mb-4">Added Courts</h3>
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">Added Courts</h3>
+        <button
+          (click)="toggleMode()"
+          class="text-sm text-green-600 hover:text-green-700"
+        >
+          Switch to {{ isBatchMode ? 'Manual' : 'Batch' }} Mode
+        </button>
+      </div>
       <div *ngIf="courts.length === 0" class="text-gray-500">
         No courts added yet. Add your first court below.
       </div>
@@ -23,7 +31,8 @@
       </div>
     </div>
 
-    <form [formGroup]="courtForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Manual Mode Form -->
+    <form *ngIf="!isBatchMode" [formGroup]="courtForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <div>
         <label for="name" class="block text-sm font-medium text-gray-700">Court Name</label>
         <input
@@ -39,6 +48,101 @@
         </div>
       </div>
 
+      <!-- Pricing Configurations -->
+      <div class="mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-md font-medium text-gray-700">Pricing Configuration</h4>
+          <button
+            type="button"
+            (click)="togglePricingMode()"
+            class="text-sm text-green-600 hover:text-green-700"
+          >
+            Switch to {{ isSimplePricingMode ? 'Advanced' : 'Simple' }} Mode
+          </button>
+        </div>
+
+        <!-- Simple Pricing Mode -->
+        <div *ngIf="isSimplePricingMode" [formGroup]="isBatchMode ? batchSimplePricing : simplePricing" class="p-4 bg-gray-50 rounded-lg">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Start Time</label>
+              <input type="time" formControlName="startTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">End Time</label>
+              <input type="time" formControlName="endTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Price</label>
+              <input type="number" formControlName="price" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Hourly Rate</label>
+              <input type="number" formControlName="hourlyRate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+          </div>
+          <p class="mt-2 text-sm text-gray-500">This pricing will be applied to all days of the week.</p>
+        </div>
+
+        <!-- Advanced Pricing Mode -->
+        <div *ngIf="!isSimplePricingMode" formArrayName="pricingConfigurations">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="text-md font-medium text-gray-700">Pricing Configurations</h4>
+            <button
+              type="button"
+              (click)="addPricingConfiguration(isBatchMode ? batchForm : courtForm)"
+              class="text-sm text-green-600 hover:text-green-700"
+            >
+              Add Pricing
+            </button>
+          </div>
+
+          <div *ngFor="let config of (isBatchMode ? batchPricingConfigurations : pricingConfigurations).controls; let i = index" [formGroupName]="i" class="p-4 bg-gray-50 rounded-lg mb-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Days of Week</label>
+                <select
+                  multiple
+                  formControlName="selectedDays"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                >
+                  <option *ngFor="let day of daysOfWeek" [value]="day">
+                    {{ day }}
+                  </option>
+                </select>
+                <div *ngIf="config.get('selectedDays')?.invalid && config.get('selectedDays')?.touched" class="text-red-500 text-sm mt-1">
+                  <span *ngIf="config.get('selectedDays')?.errors?.['required']">At least one day must be selected</span>
+                  <span *ngIf="config.get('selectedDays')?.errors?.['minlength']">At least one day must be selected</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Start Time</label>
+                <input type="time" formControlName="startTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">End Time</label>
+                <input type="time" formControlName="endTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Price</label>
+                <input type="number" formControlName="price" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Hourly Rate</label>
+                <input type="number" formControlName="hourlyRate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+              </div>
+            </div>
+            <button
+              type="button"
+              (click)="removePricingConfiguration(i, isBatchMode ? batchForm : courtForm)"
+              class="mt-2 text-sm text-red-600 hover:text-red-700"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div *ngIf="error" class="text-red-500 text-sm mt-2">{{ error }}</div>
 
       <div class="flex justify-between space-x-4">
@@ -51,7 +155,7 @@
         </button>
         <button
           type="submit"
-          [disabled]="courtForm.invalid || isLoading"
+          [disabled]="(isSimplePricingMode ? simplePricing.invalid : courtForm.invalid) || isLoading"
           class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
         >
           <span *ngIf="isLoading" class="mr-2">
@@ -61,6 +165,162 @@
             </svg>
           </span>
           Add Court
+        </button>
+      </div>
+    </form>
+
+    <!-- Batch Mode Form -->
+    <form *ngIf="isBatchMode" [formGroup]="batchForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label for="baseName" class="block text-sm font-medium text-gray-700">Base Name</label>
+        <input
+          type="text"
+          id="baseName"
+          formControlName="baseName"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+          [ngClass]="{'border-red-500': batchForm.get('baseName')?.invalid && batchForm.get('baseName')?.touched}"
+        >
+        <div *ngIf="batchForm.get('baseName')?.invalid && batchForm.get('baseName')?.touched" class="text-red-500 text-sm mt-1">
+          <span *ngIf="batchForm.get('baseName')?.errors?.['required']">Base name is required</span>
+          <span *ngIf="batchForm.get('baseName')?.errors?.['maxlength']">Name cannot exceed 50 characters</span>
+        </div>
+      </div>
+
+      <div>
+        <label for="numberOfCourts" class="block text-sm font-medium text-gray-700">Number of Courts</label>
+        <input
+          type="number"
+          id="numberOfCourts"
+          formControlName="numberOfCourts"
+          min="1"
+          max="20"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+          [ngClass]="{'border-red-500': batchForm.get('numberOfCourts')?.invalid && batchForm.get('numberOfCourts')?.touched}"
+        >
+        <div *ngIf="batchForm.get('numberOfCourts')?.invalid && batchForm.get('numberOfCourts')?.touched" class="text-red-500 text-sm mt-1">
+          <span *ngIf="batchForm.get('numberOfCourts')?.errors?.['required']">Number of courts is required</span>
+          <span *ngIf="batchForm.get('numberOfCourts')?.errors?.['min']">Minimum 1 court required</span>
+          <span *ngIf="batchForm.get('numberOfCourts')?.errors?.['max']">Maximum 20 courts allowed</span>
+        </div>
+      </div>
+
+      <!-- Pricing Configurations -->
+      <div class="mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-md font-medium text-gray-700">Pricing Configuration</h4>
+          <button
+            type="button"
+            (click)="togglePricingMode()"
+            class="text-sm text-green-600 hover:text-green-700"
+          >
+            Switch to {{ isSimplePricingMode ? 'Advanced' : 'Simple' }} Mode
+          </button>
+        </div>
+
+        <!-- Simple Pricing Mode -->
+        <div *ngIf="isSimplePricingMode" [formGroup]="isBatchMode ? batchSimplePricing : simplePricing" class="p-4 bg-gray-50 rounded-lg">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Start Time</label>
+              <input type="time" formControlName="startTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">End Time</label>
+              <input type="time" formControlName="endTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Price</label>
+              <input type="number" formControlName="price" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Hourly Rate</label>
+              <input type="number" formControlName="hourlyRate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+          </div>
+          <p class="mt-2 text-sm text-gray-500">This pricing will be applied to all days of the week.</p>
+        </div>
+
+        <!-- Advanced Pricing Mode -->
+        <div *ngIf="!isSimplePricingMode" formArrayName="pricingConfigurations">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="text-md font-medium text-gray-700">Pricing Configurations</h4>
+            <button
+              type="button"
+              (click)="addPricingConfiguration(isBatchMode ? batchForm : courtForm)"
+              class="text-sm text-green-600 hover:text-green-700"
+            >
+              Add Pricing
+            </button>
+          </div>
+
+          <div *ngFor="let config of batchPricingConfigurations.controls; let i = index" [formGroupName]="i" class="p-4 bg-gray-50 rounded-lg mb-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Days of Week</label>
+                <select
+                  multiple
+                  formControlName="selectedDays"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                >
+                  <option *ngFor="let day of daysOfWeek" [value]="day">
+                    {{ day }}
+                  </option>
+                </select>
+                <div *ngIf="config.get('selectedDays')?.invalid && config.get('selectedDays')?.touched" class="text-red-500 text-sm mt-1">
+                  <span *ngIf="config.get('selectedDays')?.errors?.['required']">At least one day must be selected</span>
+                  <span *ngIf="config.get('selectedDays')?.errors?.['minlength']">At least one day must be selected</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Start Time</label>
+                <input type="time" formControlName="startTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">End Time</label>
+                <input type="time" formControlName="endTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Price</label>
+                <input type="number" formControlName="price" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Hourly Rate</label>
+                <input type="number" formControlName="hourlyRate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+              </div>
+            </div>
+            <button
+              type="button"
+              (click)="removePricingConfiguration(i, batchForm)"
+              class="mt-2 text-sm text-red-600 hover:text-red-700"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="error" class="text-red-500 text-sm mt-2">{{ error }}</div>
+
+      <div class="flex justify-between space-x-4">
+        <button
+          type="button"
+          (click)="onFinish()"
+          class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+        >
+          Finish
+        </button>
+        <button
+          type="submit"
+          [disabled]="(isSimplePricingMode ? batchSimplePricing.invalid : batchForm.invalid) || isLoading"
+          class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+        >
+          <span *ngIf="isLoading" class="mr-2">
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+          Add Courts
         </button>
       </div>
     </form>

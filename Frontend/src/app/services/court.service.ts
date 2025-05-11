@@ -1,7 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { Court, PricingConfigurationRequest } from '../models/court.model';
+
+export interface CreateCourtRequest {
+  name: string;
+  facilityId: number;
+  pricingConfigurations: PricingConfigurationRequest[];
+}
+
+export interface BatchCreateCourtRequest {
+  baseName: string;
+  numberOfCourts: number;
+  facilityId: number;
+  pricingConfigurations: PricingConfigurationRequest[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,23 +26,33 @@ export class CourtService {
 
   constructor(private http: HttpClient) {}
 
-  createCourt(court: any): Observable<any> {
-    return this.http.post(this.apiUrl, court);
+  getCourts(facilityId: number): Observable<Court[]> {
+    return this.http.get<Court[]>(`${this.apiUrl}?facilityId=${facilityId}`);
   }
 
-  getCourt(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  createCourt(request: CreateCourtRequest): Observable<Court> {
+    console.log('Sending court request:', request);
+    return this.http.post<Court>(this.apiUrl, request).pipe(
+      tap({
+        error: (error) => console.error('Error creating court:', error)
+      })
+    );
   }
 
-  updateCourt(id: number, court: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, court);
+  createBatchCourts(request: BatchCreateCourtRequest): Observable<Court[]> {
+    console.log('Sending batch request:', request);
+    return this.http.post<Court[]>(`${this.apiUrl}/batch`, request).pipe(
+      tap({
+        error: (error) => console.error('Error creating batch courts:', error)
+      })
+    );
   }
 
-  deleteCourt(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  updateCourt(id: number, court: Partial<Court>): Observable<Court> {
+    return this.http.put<Court>(`${this.apiUrl}/${id}`, court);
   }
 
-  getCourts(facilityId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?facilityId=${facilityId}`);
+  deleteCourt(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 } 

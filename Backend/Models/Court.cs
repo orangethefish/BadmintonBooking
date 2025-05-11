@@ -16,7 +16,7 @@ namespace BadmintonBooking.API.Models
         public Facility Facility { get; set; }
         
         [Required]
-        public int OwnerId { get; set; }
+        public Guid OwnerId { get; set; }
         public User Owner { get; set; }
         
         public bool IsActive { get; set; }
