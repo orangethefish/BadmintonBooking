@@ -4,7 +4,6 @@ export interface PricingConfiguration {
   startTime: string;
   endTime: string;
   price: number;
-  hourlyRate: number;
   isActive: boolean;
 }
 
@@ -13,7 +12,13 @@ export interface PricingConfigurationRequest {
   startTime: string;
   endTime: string;
   price: number;
-  hourlyRate: number;
+}
+
+export interface PricingConfigurationFormData {
+  daysOfWeek: number[];  // Multiple days of week in an array
+  startTime: string;
+  endTime: string;
+  price: number;
 }
 
 export interface Court {

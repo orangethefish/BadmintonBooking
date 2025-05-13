@@ -15,106 +15,51 @@ namespace BadmintonBooking.API.Services
             _facilityService = facilityService;
         }
 
-        public async Task<Court> CreateCourtAsync(CreateCourtRequest request, Guid userId)
+        public async Task<IEnumerable<Court>> CreateCourtsAsync(int facilityId, string baseName, int numberOfCourts, List<PricingConfigurationRequest> pricingConfigurations)
         {
             try
             {
-                // Verify facility exists and user owns it
-                var isOwner = await _facilityService.IsFacilityOwnerAsync(request.FacilityId, userId);
+                var createdCourts = new List<Court>();
                 
-                if (!isOwner)
-                {
-                    throw new UnauthorizedAccessException("User is not the owner of this facility");
-                }
-
-                // Get the facility to retrieve owner details
-                var facility = await _context.Facilities.FindAsync(request.FacilityId);
-                if (facility == null)
-                {
-                    throw new Exception($"Facility with ID {request.FacilityId} not found");
-                }
-
-                var court = new Court
-                {
-                    Name = request.Name,
-                    FacilityId = request.FacilityId,
-                    OwnerId = facility.OwnerId,
-                    IsActive = true,
-                    CreatedAt = DateTime.UtcNow,
-                    PricingConfigurations = request.PricingConfigurations?.Select(pc => new PricingConfiguration
-                    {
-                        DayOfWeek = pc.DayOfWeek,
-                        StartTime = TimeSpan.TryParse(pc.StartTime, out var startTime) ? startTime : TimeSpan.Zero,
-                        EndTime = TimeSpan.TryParse(pc.EndTime, out var endTime) ? endTime : TimeSpan.Zero,
-                        Price = pc.Price,
-                        HourlyRate = pc.HourlyRate,
-                        IsActive = true,
-                        CreatedAt = DateTime.UtcNow
-                    }).ToList()
-                };
-
-                _context.Courts.Add(court);
-                await _context.SaveChangesAsync();
-                return court;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception
-                throw new Exception($"Error creating court: {ex.Message}", ex);
-            }
-        }
-
-        public async Task<List<Court>> CreateCourtsBatchAsync(BatchCreateCourtRequest request, Guid userId)
-        {
-            try
-            {
-                // Verify facility exists and user owns it
-                var isOwner = await _facilityService.IsFacilityOwnerAsync(request.FacilityId, userId);
-                
-                if (!isOwner)
-                {
-                    throw new UnauthorizedAccessException("User is not the owner of this facility");
-                }
-
-                // Get the facility to retrieve owner details
-                var facility = await _context.Facilities.FindAsync(request.FacilityId);
-                if (facility == null)
-                {
-                    throw new Exception($"Facility with ID {request.FacilityId} not found");
-                }
-
-                var courts = new List<Court>();
-                for (int i = 1; i <= request.NumberOfCourts; i++)
+                for (int i = 1; i <= numberOfCourts; i++)
                 {
                     var court = new Court
                     {
-                        Name = $"{request.BaseName} {i}",
-                        FacilityId = request.FacilityId,
-                        OwnerId = facility.OwnerId, // Set OwnerId from facility
+                        Name = $"{baseName} {i}",
+                        FacilityId = facilityId,
+                        OwnerId = (await _context.Facilities.FirstOrDefaultAsync(f => f.Id == facilityId)).OwnerId,
                         IsActive = true,
                         CreatedAt = DateTime.UtcNow,
-                        PricingConfigurations = request.PricingConfigurations?.Select(pc => new PricingConfiguration
+                        PricingConfigurations = new List<PricingConfiguration>()
+                    };
+                    
+                    // Create pricing configurations for each court
+                    foreach (var config in pricingConfigurations)
+                    {
+                        // Create a pricing configuration for each selected day of the week
+                        court.PricingConfigurations.Add(new PricingConfiguration
                         {
-                            DayOfWeek = pc.DayOfWeek,
-                            StartTime = TimeSpan.TryParse(pc.StartTime, out var startTime) ? startTime : TimeSpan.Zero,
-                            EndTime = TimeSpan.TryParse(pc.EndTime, out var endTime) ? endTime : TimeSpan.Zero,
-                            Price = pc.Price,
-                            HourlyRate = pc.HourlyRate,
+                            CourtId = court.Id,
+                            DayOfWeek = config.DayOfWeek,
+                            StartTime = TimeSpan.Parse(config.StartTime),
+                            EndTime = TimeSpan.Parse(config.EndTime),
+                            Price = config.Price,
                             IsActive = true,
                             CreatedAt = DateTime.UtcNow
-                        }).ToList()
-                    };
-                    courts.Add(court);
+                        });
+                    }
+                    
+                    _context.Courts.Add(court);
+                    createdCourts.Add(court);
                 }
-
-                _context.Courts.AddRange(courts);
+                
                 await _context.SaveChangesAsync();
-                return courts;
+                return createdCourts;
             }
             catch (Exception ex)
             {
                 // Log the exception
-                throw new Exception($"Error creating courts batch: {ex.Message}", ex);
+                throw new Exception($"Error creating courts: {ex.Message}", ex);
             }
         }
 

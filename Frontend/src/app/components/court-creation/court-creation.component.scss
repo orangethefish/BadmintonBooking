@@ -1,1 +1,33 @@
 // This file can be empty as we're using Tailwind CSS for styling
+
+.pricing-config-card {
+  border-left: 4px solid #3f51b5;
+  margin-bottom: 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.time-field {
+  width: 100px;
+}
+
+mat-spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.alert {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}

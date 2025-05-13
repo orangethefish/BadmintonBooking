@@ -30,22 +30,8 @@ export class CourtService {
     return this.http.get<Court[]>(`${this.apiUrl}?facilityId=${facilityId}`);
   }
 
-  createCourt(request: CreateCourtRequest): Observable<Court> {
-    console.log('Sending court request:', request);
-    return this.http.post<Court>(this.apiUrl, request).pipe(
-      tap({
-        error: (error) => console.error('Error creating court:', error)
-      })
-    );
-  }
-
-  createBatchCourts(request: BatchCreateCourtRequest): Observable<Court[]> {
-    console.log('Sending batch request:', request);
-    return this.http.post<Court[]>(`${this.apiUrl}/batch`, request).pipe(
-      tap({
-        error: (error) => console.error('Error creating batch courts:', error)
-      })
-    );
+  createCourts(request: BatchCreateCourtRequest): Observable<Court[]> {
+    return this.http.post<Court[]>(`${this.apiUrl}/batch`, request);
   }
 
   updateCourt(id: number, court: Partial<Court>): Observable<Court> {

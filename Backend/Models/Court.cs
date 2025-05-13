@@ -26,4 +26,4 @@ namespace BadmintonBooking.API.Models
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<PricingConfiguration> PricingConfigurations { get; set; }
     }
-} 
+}

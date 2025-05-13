@@ -21,11 +21,7 @@ namespace BadmintonBooking.API.Models
         public TimeSpan EndTime { get; set; }
         
         [Required]
-        public decimal Price { get; set; }
-        
-        [Required]
-        public decimal HourlyRate { get; set; }
-        
+        public decimal Price { get; set; } 
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
