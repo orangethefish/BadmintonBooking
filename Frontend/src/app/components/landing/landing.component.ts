@@ -11,4 +11,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent {
-  constructor(public authService: AuthService) {}}
+  constructor(public authService: AuthService) {}
+  logout() {
+    this.authService.logout();
+  }
+}

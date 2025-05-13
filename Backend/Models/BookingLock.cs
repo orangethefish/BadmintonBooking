@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BadmintonBooking.API.Models
@@ -10,6 +11,10 @@ namespace BadmintonBooking.API.Models
         [Required]
         public int CourtId { get; set; }
         public Court Court { get; set; }
+        
+        [Required]
+        public Guid UserId { get; set; }
+        public User User { get; set; }
         
         [Required]
         public DateTime StartTime { get; set; }

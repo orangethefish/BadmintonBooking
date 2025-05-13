@@ -52,8 +52,8 @@ namespace BadmintonBooking.API.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -89,9 +89,14 @@ namespace BadmintonBooking.API.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CourtId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BookingLocks");
                 });
@@ -116,12 +121,17 @@ namespace BadmintonBooking.API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FacilityId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Courts");
                 });
@@ -152,6 +162,9 @@ namespace BadmintonBooking.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -161,6 +174,8 @@ namespace BadmintonBooking.API.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Facilities");
                 });
@@ -204,9 +219,9 @@ namespace BadmintonBooking.API.Migrations
 
             modelBuilder.Entity("BadmintonBooking.API.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -265,7 +280,15 @@ namespace BadmintonBooking.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BadmintonBooking.API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Court");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BadmintonBooking.API.Models.Court", b =>
@@ -276,7 +299,26 @@ namespace BadmintonBooking.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BadmintonBooking.API.Models.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Facility");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("BadmintonBooking.API.Models.Facility", b =>
+                {
+                    b.HasOne("BadmintonBooking.API.Models.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("BadmintonBooking.API.Models.PricingConfiguration", b =>

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BadmintonBooking.API.Models
@@ -5,7 +6,7 @@ namespace BadmintonBooking.API.Models
     public class User
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         
         [Required]
         [MaxLength(100)]

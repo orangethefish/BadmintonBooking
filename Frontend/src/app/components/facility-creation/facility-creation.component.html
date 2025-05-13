@@ -1,0 +1,86 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold mb-2">Create New Facility</h1>
+      <div class="w-full bg-gray-200 rounded-full h-2.5">
+        <div class="bg-green-600 h-2.5 rounded-full" style="width: 50%"></div>
+      </div>
+      <p class="text-gray-600 mt-2">Step 1 of 2: Facility Details</p>
+    </div>
+
+    <form [formGroup]="facilityForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Facility Name</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+          [ngClass]="{'border-red-500': facilityForm.get('name')?.invalid && facilityForm.get('name')?.touched}"
+        >
+        <div *ngIf="facilityForm.get('name')?.invalid && facilityForm.get('name')?.touched" class="text-red-500 text-sm mt-1">
+          <span *ngIf="facilityForm.get('name')?.errors?.['required']">Facility name is required</span>
+          <span *ngIf="facilityForm.get('name')?.errors?.['maxlength']">Name cannot exceed 100 characters</span>
+        </div>
+      </div>
+
+      <div>
+        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+        <textarea
+          id="address"
+          formControlName="address"
+          rows="3"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+          [ngClass]="{'border-red-500': facilityForm.get('address')?.invalid && facilityForm.get('address')?.touched}"
+        ></textarea>
+        <div *ngIf="facilityForm.get('address')?.invalid && facilityForm.get('address')?.touched" class="text-red-500 text-sm mt-1">
+          <span *ngIf="facilityForm.get('address')?.errors?.['required']">Address is required</span>
+          <span *ngIf="facilityForm.get('address')?.errors?.['maxlength']">Address cannot exceed 500 characters</span>
+        </div>
+      </div>
+
+      <div>
+        <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          formControlName="phoneNumber"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+          [ngClass]="{'border-red-500': facilityForm.get('phoneNumber')?.invalid && facilityForm.get('phoneNumber')?.touched}"
+        >
+        <div *ngIf="facilityForm.get('phoneNumber')?.invalid && facilityForm.get('phoneNumber')?.touched" class="text-red-500 text-sm mt-1">
+          <span *ngIf="facilityForm.get('phoneNumber')?.errors?.['required']">Phone number is required</span>
+          <span *ngIf="facilityForm.get('phoneNumber')?.errors?.['maxlength']">Phone number cannot exceed 20 characters</span>
+        </div>
+      </div>
+
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-700">Description (Optional)</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="4"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+        ></textarea>
+      </div>
+
+      <div *ngIf="error" class="text-red-500 text-sm mt-2">{{ error }}</div>
+
+      <div class="flex justify-end space-x-4">
+        <button
+          type="submit"
+          [disabled]="facilityForm.invalid || isLoading"
+          class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+        >
+          <span *ngIf="isLoading" class="mr-2">
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+          Next: Add Courts
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

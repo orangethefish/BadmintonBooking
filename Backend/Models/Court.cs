@@ -15,6 +15,10 @@ namespace BadmintonBooking.API.Models
         public int FacilityId { get; set; }
         public Facility Facility { get; set; }
         
+        [Required]
+        public Guid OwnerId { get; set; }
+        public User Owner { get; set; }
+        
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -22,4 +26,4 @@ namespace BadmintonBooking.API.Models
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<PricingConfiguration> PricingConfigurations { get; set; }
     }
-} 
+}

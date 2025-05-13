@@ -1,0 +1,132 @@
+<div class="container p-4">
+  <div *ngIf="!facilityInfo" class="d-flex justify-content-center">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="facilityInfo">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Create Courts for {{ facilityInfo?.name }}</mat-card-title>
+        <mat-card-subtitle>{{ facilityInfo?.address }}</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <form [formGroup]="courtForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="w-100 mt-3">
+                <mat-label>Base Name</mat-label>
+                <input matInput formControlName="baseName" placeholder="Court" required>
+                <mat-error *ngIf="courtForm.get('baseName')?.errors?.['required']">Base name is required</mat-error>
+                <mat-error *ngIf="courtForm.get('baseName')?.errors?.['maxlength']">Maximum 50 characters</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="w-100 mt-3">
+                <mat-label>Number of Courts</mat-label>
+                <input matInput type="number" formControlName="numberOfCourts" min="1" max="100" required>
+                <mat-error *ngIf="courtForm.get('numberOfCourts')?.errors?.['required']">Number of courts is required</mat-error>
+                <mat-error *ngIf="courtForm.get('numberOfCourts')?.errors?.['min']">Minimum 1 court</mat-error>
+                <mat-error *ngIf="courtForm.get('numberOfCourts')?.errors?.['max']">Maximum 100 courts</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <h3>Pricing Configurations</h3>
+            <p class="text-muted">Define pricing configurations for all days of the week. All time periods must be covered (from 00:00 to 24:00) without overlaps.</p>
+            
+            <div *ngIf="courtForm.errors?.['overlappingTimes']" class="alert alert-danger">
+              There are overlapping time periods for one or more days. Please fix this before continuing.
+            </div>
+            
+            <div *ngIf="courtForm.errors?.['gapInTimes']" class="alert alert-danger">
+              All days must have continuous coverage from 00:00 to 24:00. Please fix any gaps in your time configurations.
+            </div>
+            
+            <div formArrayName="pricingConfigurations">
+              <mat-card *ngFor="let config of pricingConfigurations.controls; let i = index" class="mb-3 pricing-config-card">
+                <mat-card-content [formGroupName]="i">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0">Configuration #{{ i + 1 }}</h4>
+                    <button mat-icon-button color="warn" type="button" (click)="removePricingConfiguration(i)" [disabled]="pricingConfigurations.length <= 1">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-12">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Days of Week</mat-label>
+                        <mat-select formControlName="daysOfWeek" multiple required>
+                          <mat-option *ngFor="let day of daysOfWeek" [value]="day.value">
+                            {{ day.name }}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="config.get('daysOfWeek')?.errors?.['required']">Please select at least one day</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Start Time (HH:MM)</mat-label>
+                        <input matInput formControlName="startTime" placeholder="00:00" required>
+                        <mat-hint>Use format like 00:00, 08:30, 14:45</mat-hint>
+                        <mat-error *ngIf="config.get('startTime')?.errors?.['required']">Start time is required</mat-error>
+                        <mat-error *ngIf="config.get('startTime')?.errors?.['pattern']">Use format HH:MM (00:00-23:59)</mat-error>
+                      </mat-form-field>
+                    </div>
+                    
+                    <div class="col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>End Time (HH:MM)</mat-label>
+                        <input matInput formControlName="endTime" placeholder="24:00" required>
+                        <mat-hint>Use 24:00 for midnight (end of day)</mat-hint>
+                        <mat-error *ngIf="config.get('endTime')?.errors?.['required']">End time is required</mat-error>
+                        <mat-error *ngIf="config.get('endTime')?.errors?.['pattern']">Use format HH:MM (00:00-24:00)</mat-error>
+                      </mat-form-field>
+                    </div>
+                    
+                    <div *ngIf="config.errors?.['invalidTimeRange']" class="col-12">
+                      <div class="alert alert-danger">End time must be after start time</div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Price</mat-label>
+                        <input matInput type="number" formControlName="price" min="0" required>
+                        <mat-error *ngIf="config.get('price')?.errors?.['required']">Price is required</mat-error>
+                        <mat-error *ngIf="config.get('price')?.errors?.['min']">Price cannot be negative</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              
+              <button type="button" mat-stroked-button color="primary" (click)="addPricingConfiguration()" class="mt-2">
+                <mat-icon>add</mat-icon> Add Configuration
+              </button>
+            </div>
+          </div>
+          
+          <div class="mt-4 d-flex justify-content-between">
+            <!-- <button mat-button routerLink="/facility/{{facilityId}}" [disabled]="loading">Cancel</button> -->
+            <button mat-raised-button color="primary" type="submit" [disabled]="courtForm.invalid || loading">
+              <span *ngIf="!loading">Create Courts</span>
+              <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            </button>
+          </div>
+          
+          <div *ngIf="error" class="alert alert-danger mt-3">
+            {{ error }}
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
