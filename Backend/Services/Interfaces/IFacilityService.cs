@@ -10,5 +10,6 @@ namespace BadmintonBooking.API.Services
         Task<bool> IsFacilityOwnerAsync(int facilityId, Guid userId);
         Task<bool> UpdateFacilityAsync(int id, UpdateFacilityRequest request);
         Task<bool> DeleteFacilityAsync(int id);
+        Task<ResolveUrlResponse> ResolveUrlAsync(ResolveUrlRequest request);
     }
 }

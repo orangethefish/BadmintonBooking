@@ -35,7 +35,10 @@ namespace BadmintonBooking.API.Controllers
                     IsActive = facility.IsActive,
                     OwnerId = facility.OwnerId,
                     CreatedAt = facility.CreatedAt,
-                    UpdatedAt = facility.UpdatedAt
+                    UpdatedAt = facility.UpdatedAt,
+                    MapsUrl = facility.MapsUrl,
+                    CourtLatitude = facility.CourtLatitude,
+                    CourtLongitude = facility.CourtLongitude
                 });
             }
             catch (Exception ex)
@@ -66,8 +69,30 @@ namespace BadmintonBooking.API.Controllers
                     IsActive = facility.IsActive,
                     OwnerId = facility.OwnerId,
                     CreatedAt = facility.CreatedAt,
-                    UpdatedAt = facility.UpdatedAt
+                    UpdatedAt = facility.UpdatedAt,
+                    MapsUrl = facility.MapsUrl,
+                    CourtLatitude = facility.CourtLatitude,
+                    CourtLongitude = facility.CourtLongitude
                 });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        [HttpPost("resolve-url")]
+        public async Task<ActionResult<ResolveUrlResponse>> ResolveUrl([FromBody] ResolveUrlRequest request)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(request.Url))
+                {
+                    return BadRequest(new { error = "URL is required" });
+                }
+
+                var response = await _facilityService.ResolveUrlAsync(request);
+                return Ok(response);
             }
             catch (Exception ex)
             {

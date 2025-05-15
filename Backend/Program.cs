@@ -31,6 +31,9 @@ builder.Services.AddScoped<ILoggerService, LoggerService>();
 builder.Services.AddScoped<IFacilityService, FacilityService>();
 builder.Services.AddScoped<ICourtService, CourtService>();
 
+// Add HttpClient for external API calls
+builder.Services.AddHttpClient();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
