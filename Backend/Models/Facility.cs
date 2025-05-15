@@ -29,5 +29,11 @@ namespace BadmintonBooking.API.Models
         public User Owner { get; set; }
         
         public ICollection<Court> Courts { get; set; }
+        [StringLength(200)]
+        public string? MapsUrl { get; set; }
+        [StringLength(100)]
+        public string? CourtLongitude { get; set; }
+        [StringLength(100)]
+        public string? CourtLatitude { get; set; }
     }
 } 
