@@ -30,4 +30,7 @@ export class FacilityService {
   getFacilities(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
+  resolveUrl(url: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/resolve-url`, { url });
+  }
 } 
