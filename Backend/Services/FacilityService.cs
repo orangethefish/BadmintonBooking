@@ -39,7 +39,8 @@ namespace BadmintonBooking.API.Services
                     CreatedAt = DateTime.UtcNow,
                     MapsUrl = request.MapsUrl,
                     CourtLatitude = request.CourtLatitude,
-                    CourtLongitude = request.CourtLongitude
+                    CourtLongitude = request.CourtLongitude,
+                    PlaceId = request.PlaceId
                 };
 
                 _context.Facilities.Add(facility);
@@ -176,6 +177,7 @@ namespace BadmintonBooking.API.Services
                 response.Latitude = placeInfo.Latitude;
                 response.Longitude = placeInfo.Longitude;
                 response.PhoneNumber = placeInfo.PhoneNumber;
+                response.PlaceId = placeInfo.PlaceId;
             }
 
             return response;
@@ -295,7 +297,8 @@ namespace BadmintonBooking.API.Services
                     Name = placeDetails.Result.Name,
                     Latitude = placeDetails.Result.Geometry?.Location?.Lat,
                     Longitude = placeDetails.Result.Geometry?.Location?.Lng,
-                    PhoneNumber = placeDetails.Result.FormattedPhoneNumber
+                    PhoneNumber = placeDetails.Result.FormattedPhoneNumber,
+                    PlaceId = placeDetails.Result.PlaceId
                 };
             }
             catch (Exception ex)

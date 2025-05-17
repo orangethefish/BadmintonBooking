@@ -19,6 +19,8 @@ namespace BadmintonBooking.API.Models
         public string FormattedPhoneNumber { get; set; }
         
         public PlaceGeometry Geometry { get; set; }
+        [JsonPropertyName("place_id")]
+        public string PlaceId { get; set; }
     }
 
     public class PlaceGeometry

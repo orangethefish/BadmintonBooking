@@ -39,7 +39,8 @@ export class FacilityCreationComponent implements OnInit {
       description: [''],
       mapsUrl: [''],
       latitude: [''],
-      longitude: ['']
+      longitude: [''],
+      placeId: ['']
     });
   }
 
@@ -91,6 +92,11 @@ export class FacilityCreationComponent implements OnInit {
           updates.phoneNumber = response.phoneNumber;
         }
         
+        // Update placeId if available
+        if (response.placeId) {
+          updates.placeId = response.placeId;
+        }
+        
         // Update form values
         this.facilityForm.patchValue(updates);
       } else {
@@ -118,12 +124,13 @@ export class FacilityCreationComponent implements OnInit {
           description: formData.description,
           mapsUrl: formData.mapsUrl,
           courtLatitude: formData.latitude,
-          courtLongitude: formData.longitude
+          courtLongitude: formData.longitude,
+          placeId: formData.placeId
         };
         
         const facility = await this.facilityService.createFacility(facilityData).toPromise();
         // Navigate to court creation with the new facility ID
-        this.router.navigate(['court/create'], { queryParams: { facilityId: facility.id }});
+        this.router.navigate(['court/create'], { queryParams: { facilityId: facility?.id }});
       } catch (err: any) {
         this.error = err.error?.message || 'Failed to create facility';
       } finally {

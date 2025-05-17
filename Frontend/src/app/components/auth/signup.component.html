@@ -1,9 +1,9 @@
 <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900" i18n>Create your account</h2>
     <p class="mt-2 text-center text-sm text-gray-600">
-      Or
-      <a routerLink="/login" class="font-medium text-green-600 hover:text-green-500">sign in to your account</a>
+      <span i18n>Or</span>
+      <a routerLink="/login" class="font-medium text-green-600 hover:text-green-500" i18n>sign in to your account</a>
     </p>
   </div>
 
@@ -25,36 +25,36 @@
       
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="space-y-6" novalidate>
         <div>
-          <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+          <label for="username" class="block text-sm font-medium text-gray-700" i18n>Username</label>
           <div class="mt-1">
-            <input id="username" name="username" type="text" formControlName="username" placeholder="Your username" required
+            <input id="username" name="username" type="text" formControlName="username" i18n-placeholder placeholder="Your username" required
               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
             <div *ngIf="signupForm.get('username')?.touched && signupForm.get('username')?.invalid" class="mt-1 text-sm text-red-600">
-              <div *ngIf="signupForm.get('username')?.errors?.['required']">Username is required</div>
+              <div *ngIf="signupForm.get('username')?.errors?.['required']" i18n>Username is required</div>
             </div>
           </div>
         </div>
 
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+          <label for="email" class="block text-sm font-medium text-gray-700" i18n>Email address</label>
           <div class="mt-1">
-            <input id="email" name="email" type="email" formControlName="email" placeholder="you@example.com" required
+            <input id="email" name="email" type="email" formControlName="email" i18n-placeholder placeholder="you@example.com" required
               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
             <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid" class="mt-1 text-sm text-red-600">
-              <div *ngIf="signupForm.get('email')?.errors?.['required']">Email is required</div>
-              <div *ngIf="signupForm.get('email')?.errors?.['email']">Please enter a valid email</div>
+              <div *ngIf="signupForm.get('email')?.errors?.['required']" i18n>Email is required</div>
+              <div *ngIf="signupForm.get('email')?.errors?.['email']" i18n>Please enter a valid email</div>
             </div>
           </div>
         </div>
 
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <label for="password" class="block text-sm font-medium text-gray-700" i18n>Password</label>
           <div class="mt-1">
-            <input id="password" name="password" type="password" formControlName="password" placeholder="••••••" required
+            <input id="password" name="password" type="password" formControlName="password" i18n-placeholder placeholder="••••••" required
               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
             <div *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid" class="mt-1 text-sm text-red-600">
-              <div *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</div>
-              <div *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</div>
+              <div *ngIf="signupForm.get('password')?.errors?.['required']" i18n>Password is required</div>
+              <div *ngIf="signupForm.get('password')?.errors?.['minlength']" i18n>Password must be at least 6 characters</div>
             </div>
           </div>
         </div>
@@ -66,7 +66,8 @@
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            {{ isLoading ? 'Creating account...' : 'Sign up' }}
+            <ng-container *ngIf="isLoading" i18n>Creating account...</ng-container>
+            <ng-container *ngIf="!isLoading" i18n>Sign up</ng-container>
           </button>
         </div>
       </form>

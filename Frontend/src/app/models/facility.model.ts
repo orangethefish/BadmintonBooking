@@ -7,6 +7,7 @@ export interface Facility {
   mapsUrl?: string;
   courtLatitude?: string;
   courtLongitude?: string;
+  placeId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,4 +19,5 @@ export interface ResolveUrlResponse {
   latitude?: number;
   longitude?: number;
   phoneNumber?: string;
+  placeId?: string;
 } 
