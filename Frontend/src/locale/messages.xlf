@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="8368872827766248541" datatype="html">
+        <source>Sign in to your account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5504129468136884250" datatype="html">
+        <source>Or</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5884658490822125233" datatype="html">
+        <source>create a new account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3967269098753656610" datatype="html">
+        <source>Email address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">28,29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8494605922302746269" datatype="html">
+        <source>you@example.com</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">41,42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8552587679160911578" datatype="html">
+        <source>Email is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">33,34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">44,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8134695558272106554" datatype="html">
+        <source>Please enter a valid email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1431416938026210429" datatype="html">
+        <source>Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="230913410964427686" datatype="html">
+        <source>••••••</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">53,54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="205044832662301680" datatype="html">
+        <source>Password is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">56,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6446631772000124223" datatype="html">
+        <source>Password must be at least 6 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">46,47</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1858953469563036586" datatype="html">
+        <source>Signing in...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5207635742003539443" datatype="html">
+        <source>Sign in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2224947564116830026" datatype="html">
+        <source>Create your account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3331861827611505623" datatype="html">
+        <source>sign in to your account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5248717555542428023" datatype="html">
+        <source>Username</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">28,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="977632980963560199" datatype="html">
+        <source>Your username</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3702338872876040900" datatype="html">
+        <source>Username is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">33,34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3077599139444771356" datatype="html">
+        <source>Creating account...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7028204981963450021" datatype="html">
+        <source>Sign up</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/signup.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1684011133349388592" datatype="html">
+        <source>Create Courts for <x id="INTERPOLATION" equiv-text="{{ facilityInfo?.name }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8409915678792279439" datatype="html">
+        <source>Base Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3082904317412494872" datatype="html">
+        <source>Court</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6523725274125254854" datatype="html">
+        <source>Base name is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5465896910603661851" datatype="html">
+        <source>Maximum 50 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5751643860878877267" datatype="html">
+        <source>Number of Courts</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="545172269878959156" datatype="html">
+        <source>Number of courts is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5453802177181517617" datatype="html">
+        <source>Minimum 1 court</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1115841747763592647" datatype="html">
+        <source>Maximum 100 courts</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6494327344802161766" datatype="html">
+        <source>Pricing Configurations</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7357968166981833955" datatype="html">
+        <source>Define pricing configurations for all days of the week. All time periods must be covered (from 00:00 to 24:00) without overlaps.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">38,39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7600422522674739034" datatype="html">
+        <source> There are overlapping time periods for one or more days. Please fix this before continuing. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1077255637486656117" datatype="html">
+        <source> All days must have continuous coverage from 00:00 to 24:00. Please fix any gaps in your time configurations. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6795649994856454061" datatype="html">
+        <source>Configuration #<x id="INTERPOLATION" equiv-text="{{ i + 1 }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">52,53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2962319303494281745" datatype="html">
+        <source>Days of Week</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6508650412393549587" datatype="html">
+        <source>Please select at least one day</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1252336642735581518" datatype="html">
+        <source>Start Time (HH:MM)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4394306716751930172" datatype="html">
+        <source>00:00</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5206704080429391753" datatype="html">
+        <source>Use format like 00:00, 08:30, 14:45</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1725258139659526692" datatype="html">
+        <source>Start time is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2477787108268864371" datatype="html">
+        <source>Use format HH:MM (00:00-23:59)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8010986909078498366" datatype="html">
+        <source>End Time (HH:MM)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2398280375306467510" datatype="html">
+        <source>24:00</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1102848659873030170" datatype="html">
+        <source>Use 24:00 for midnight (end of day)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6578542269308601266" datatype="html">
+        <source>End time is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2358289285394899733" datatype="html">
+        <source>Use format HH:MM (00:00-24:00)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6876222640762924633" datatype="html">
+        <source>End time must be after start time</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">94,95</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8894377483833272091" datatype="html">
+        <source>Price</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7310210220307363127" datatype="html">
+        <source>Price is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3952334186758060718" datatype="html">
+        <source>Price cannot be negative</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3713320506716662490" datatype="html">
+        <source>Add Configuration</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">112,113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2198123982724886532" datatype="html">
+        <source>Create Courts</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">120,121</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7692402804169489411" datatype="html">
+        <source>Create New Facility</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2823270298987288547" datatype="html">
+        <source>Step 1 of 2: Facility Details</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2141510913653866849" datatype="html">
+        <source>Google Maps URL</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">13,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5565226586128089346" datatype="html">
+        <source>Paste Google Maps URL here</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">19,20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8913794084097958305" datatype="html">
+        <source>Verify</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7541115830139507159" datatype="html">
+        <source>Paste a Google Maps URL to automatically extract location information</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1066394174874242139" datatype="html">
+        <source>Facility Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1873111371255959221" datatype="html">
+        <source>Facility name is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">49,50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4499266943001266901" datatype="html">
+        <source>Name cannot exceed 100 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6304432362546770951" datatype="html">
+        <source>Address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7730102266852568655" datatype="html">
+        <source>Address is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">64,65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4742657187960929080" datatype="html">
+        <source>Address cannot exceed 500 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">65,66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8194554728555410336" datatype="html">
+        <source>Phone Number</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">70,71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4941543669684168127" datatype="html">
+        <source>Phone number is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">79,80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6202008454272345153" datatype="html">
+        <source>Phone number cannot exceed 20 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">80,81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7506599101815381769" datatype="html">
+        <source>Description (Optional)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">85,86</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6343483215139004783" datatype="html">
+        <source>Next: Add Courts</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/facility-creation/facility-creation.component.html</context>
+          <context context-type="linenumber">108,109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="904180897011914971" datatype="html">
+        <source>SmashCourt</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2454050363478003966" datatype="html">
+        <source>Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1466012768716286509" datatype="html">
+        <source>Sign Up</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6570363013146073520" datatype="html">
+        <source>Dashboard</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3797778920049399855" datatype="html">
+        <source>Logout</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">11,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2651502023563794941" datatype="html">
+        <source>Book Your Perfect Court</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">17,18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3463760630103334675" datatype="html">
+        <source>Find and book badminton courts near you</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">18,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4064387578036169053" datatype="html">
+        <source> Book Now </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3606838158258201251" datatype="html">
+        <source>Featured Facilities</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">25,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2659597622465390120" datatype="html">
+        <source>Sports Center 1</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3582914640520416398" datatype="html">
+        <source>Professional courts with top-notch facilities</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">36,37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1468015720862673946" datatype="html">
+        <source>View Details</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">43,44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7599766576827521532" datatype="html">
+        <source>Sports Center 2</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4268694935469366069" datatype="html">
+        <source>Sports Center 3</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
+          <context context-type="linenumber">41,42</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
