@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using BadmintonBooking.API.Models;
 using BadmintonBooking.API.Services;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace BadmintonBooking.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CourtController : ControllerBase
     {
         private readonly ICourtService _courtService;
