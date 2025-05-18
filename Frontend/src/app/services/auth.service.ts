@@ -29,8 +29,13 @@ export class AuthService {
       );
   }
 
-  register(username: string, email: string, password: string): Observable<AuthResult> {
-    return this.http.post<AuthResult>(`${environment.apiUrl}/auth/register`, { username, email, password })
+  register(username: string, email: string, password: string, accountType: string = 'User'): Observable<AuthResult> {
+    return this.http.post<AuthResult>(`${environment.apiUrl}/auth/register`, { 
+      username, 
+      email, 
+      password,
+      accountType
+    })
       .pipe(
         tap(response => {
           localStorage.setItem('currentUser', JSON.stringify(response));
@@ -84,5 +89,10 @@ export class AuthService {
 
   get currentUserValue(): AuthResult | null {
     return this.currentUserSubject.value;
+  }
+  
+  hasRole(role: string): boolean {
+    const currentUser = this.currentUserSubject.value;
+    return currentUser?.roles?.includes(role) || false;
   }
 }

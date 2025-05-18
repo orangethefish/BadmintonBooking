@@ -42,7 +42,8 @@ namespace BadmintonBooking.API.Controllers
                 {
                     Username = request.Username,
                     Email = request.Email,
-                    Password = request.Password
+                    Password = request.Password,
+                    AccountType = request.AccountType ?? "User" // Default to User if not specified
                 };
 
                 var result = await _authService.RegisterAsync(model);

@@ -27,7 +27,8 @@ export class SignupComponent {
     this.signupForm = this.fb.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      accountType: ['User', [Validators.required]]
     });
   }
 
@@ -39,10 +40,16 @@ export class SignupComponent {
       const registerRequest: RegisterRequest = {
         username: this.signupForm.value.username,
         email: this.signupForm.value.email,
-        password: this.signupForm.value.password
+        password: this.signupForm.value.password,
+        accountType: this.signupForm.value.accountType
       };
       
-      this.authService.register(registerRequest.username, registerRequest.email, registerRequest.password).subscribe({
+      this.authService.register(
+        registerRequest.username, 
+        registerRequest.email, 
+        registerRequest.password,
+        registerRequest.accountType
+      ).subscribe({
         next: (result) => {
           this.isLoading = false;
           if (result.success) {

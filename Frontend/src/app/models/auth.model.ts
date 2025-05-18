@@ -9,7 +9,7 @@ export interface AuthResult {
   success: boolean;
   token: string;
   username: string;
-  role: string;
+  roles: string[];
   error?: string;
 }
 
@@ -28,6 +28,7 @@ export interface RegisterRequest {
   username: string;
   email: string;
   password: string;
+  accountType: string;
 }
 
 /**
@@ -37,5 +38,5 @@ export interface User {
   id?: string;
   username: string;
   email: string;
-  role: string;
+  roles: string[];
 }

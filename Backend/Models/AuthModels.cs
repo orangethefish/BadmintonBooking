@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BadmintonBooking.API.Models
@@ -27,12 +28,24 @@ namespace BadmintonBooking.API.Models
         [Required]
         [MinLength(6)]
         public string Password { get; set; }
+        
+        // Add AccountType to determine if User or Owner account
+        [Required]
+        public string AccountType { get; set; } = "User"; // Default to User if not specified
+    }
+
+    public class RegisterModel
+    {
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string AccountType { get; set; } = "User"; // Default to User if not specified
     }
 
     public class AuthResponse
     {
         public string Token { get; set; }
         public string Username { get; set; }
-        public string Role { get; set; }
+        public List<string> Roles { get; set; } = new List<string>();
     }
 }

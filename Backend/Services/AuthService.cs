@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using BadmintonBooking.API.Data;
 using BadmintonBooking.API.Models;
@@ -12,12 +13,18 @@ namespace BadmintonBooking.API.Services
         private readonly ApplicationDbContext _context;
         private readonly TokenService _tokenService;
         private readonly ILoggerService _logger;
+        private readonly IRoleService _roleService;
 
-        public AuthService(ApplicationDbContext context, TokenService tokenService, ILoggerService logger)
+        public AuthService(
+            ApplicationDbContext context, 
+            TokenService tokenService, 
+            ILoggerService logger,
+            IRoleService roleService)
         {
             _context = context;
             _tokenService = tokenService;
             _logger = logger;
+            _roleService = roleService;
         }
 
         public async Task<AuthResult> LoginAsync(string email, string password)
@@ -41,7 +48,10 @@ namespace BadmintonBooking.API.Services
                     return new AuthResult { Success = false, Error = "Invalid password" };
                 }
 
-                var token = _tokenService.GenerateJwtToken(user);
+                // Get user roles
+                var roles = await _roleService.GetUserRolesAsync(user.Id);
+                
+                var token = _tokenService.GenerateJwtToken(user, roles);
                 _logger.Info($"Login successful for user: {user.Username}");
 
                 return new AuthResult
@@ -49,7 +59,7 @@ namespace BadmintonBooking.API.Services
                     Success = true,
                     Token = token,
                     Username = user.Username,
-                    Role = user.Role
+                    Roles = roles
                 };
             }
             catch (Exception ex)
@@ -82,22 +92,34 @@ namespace BadmintonBooking.API.Services
                     Username = model.Username,
                     Email = model.Email,
                     PasswordHash = HashPassword(model.Password),
-                    Role = "User",
                     CreatedAt = DateTime.UtcNow
                 };
 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
 
-                var token = _tokenService.GenerateJwtToken(user);
-                _logger.Info($"Registration successful for user: {user.Username}");
+                // Assign roles based on account type
+                string roleName = "User"; // Default role
+                
+                if (model.AccountType.Equals("Owner", StringComparison.OrdinalIgnoreCase))
+                {
+                    roleName = "Owner";
+                }
+                
+                await _roleService.AddUserToRoleAsync(user.Id, roleName);
+                
+                // Get user roles
+                var roles = await _roleService.GetUserRolesAsync(user.Id);
+                
+                var token = _tokenService.GenerateJwtToken(user, roles);
+                _logger.Info($"Registration successful for user: {user.Username} with role: {roleName}");
 
                 return new AuthResult
                 {
                     Success = true,
                     Token = token,
                     Username = user.Username,
-                    Role = user.Role
+                    Roles = roles
                 };
             }
             catch (Exception ex)
