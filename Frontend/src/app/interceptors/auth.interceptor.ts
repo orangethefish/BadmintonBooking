@@ -36,11 +36,12 @@ export const authInterceptor: HttpInterceptorFn = (
     return next(authReq).pipe(
       catchError((error) => {
         console.error('Request failed:', error);
-        // Handle 401 Unauthorized errors
+        // Handle 401 Unauthorized errors (expired token or unauthorized access)
         if (error instanceof HttpErrorResponse && error.status === 401) {
-          // Clear local storage and redirect to landing page
+          // Clear local storage and redirect to login page
           localStorage.removeItem('currentUser');
-          router.navigate(['/']);
+          router.navigate(['/auth/login']);
+          return throwError(() => new Error('Session expired. Please login again.'));
         }
         return throwError(() => error);
       })
@@ -59,11 +60,12 @@ export const authInterceptor: HttpInterceptorFn = (
   return next(defaultReq).pipe(
     catchError((error) => {
       console.error('Request failed:', error);
-      // Handle 401 Unauthorized errors
+      // Handle 401 Unauthorized errors (expired token or unauthorized access)
       if (error instanceof HttpErrorResponse && error.status === 401) {
-        // Clear local storage and redirect to landing page
+        // Clear local storage and redirect to login page
         localStorage.removeItem('currentUser');
-        router.navigate(['/']);
+        router.navigate(['/auth/login']);
+        return throwError(() => new Error('Session expired. Please login again.'));
       }
       return throwError(() => error);
     })

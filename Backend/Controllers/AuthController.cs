@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using BadmintonBooking.API.Models;
@@ -61,7 +62,7 @@ namespace BadmintonBooking.API.Controllers
         {
             try
             {
-                var userId = User.FindFirst("sub")?.Value;
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                     return BadRequest(new { message = "User not found" });
 
