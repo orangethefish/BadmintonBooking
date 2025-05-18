@@ -24,12 +24,13 @@ builder.Services.AddCors(options =>
 });
 
 // Register services
-builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<ILoggerService, LoggerService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IFacilityService, FacilityService>();
 builder.Services.AddScoped<ICourtService, CourtService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 // Add HttpClient for external API calls
 builder.Services.AddHttpClient();
@@ -60,6 +61,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+// Initialize roles
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var roleService = services.GetRequiredService<IRoleService>();
+        await roleService.EnsureRolesCreatedAsync();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILoggerService>();
+        logger.Error("An error occurred while seeding roles", ex);
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
