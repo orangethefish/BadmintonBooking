@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BadmintonBooking.API.Models;
 using BadmintonBooking.API.Services;
+using BadmintonBooking.API.Services.Interfaces;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;

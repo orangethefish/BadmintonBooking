@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<ILoggerService, LoggerService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IFacilityService, FacilityService>();
 builder.Services.AddScoped<ICourtService, CourtService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
