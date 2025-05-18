@@ -26,6 +26,9 @@ namespace BadmintonBooking.API.Models
         
         [StringLength(100)]
         public string CourtLongitude { get; set; }
+        
+        [StringLength(36)]
+        public string PlaceId { get; set; }
     }
 
     public class UpdateFacilityRequest
@@ -59,6 +62,7 @@ namespace BadmintonBooking.API.Models
         public string MapsUrl { get; set; }
         public string CourtLatitude { get; set; }
         public string CourtLongitude { get; set; }
+        public string PlaceId { get; set; }
     }
 
     public class ResolveUrlRequest
@@ -75,6 +79,7 @@ namespace BadmintonBooking.API.Models
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public string PhoneNumber { get; set; }
+        public string PlaceId { get; set; }
     }
 
     public class PlaceInfo
@@ -84,5 +89,6 @@ namespace BadmintonBooking.API.Models
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public string PhoneNumber { get; set; }
+        public string PlaceId { get; set; }
     }
 } 

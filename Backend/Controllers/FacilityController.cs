@@ -38,7 +38,8 @@ namespace BadmintonBooking.API.Controllers
                     UpdatedAt = facility.UpdatedAt,
                     MapsUrl = facility.MapsUrl,
                     CourtLatitude = facility.CourtLatitude,
-                    CourtLongitude = facility.CourtLongitude
+                    CourtLongitude = facility.CourtLongitude,
+                    PlaceId = facility.PlaceId
                 });
             }
             catch (Exception ex)
@@ -72,7 +73,8 @@ namespace BadmintonBooking.API.Controllers
                     UpdatedAt = facility.UpdatedAt,
                     MapsUrl = facility.MapsUrl,
                     CourtLatitude = facility.CourtLatitude,
-                    CourtLongitude = facility.CourtLongitude
+                    CourtLongitude = facility.CourtLongitude,
+                    PlaceId = facility.PlaceId
                 });
             }
             catch (Exception ex)

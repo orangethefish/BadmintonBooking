@@ -35,5 +35,7 @@ namespace BadmintonBooking.API.Models
         public string? CourtLongitude { get; set; }
         [StringLength(100)]
         public string? CourtLatitude { get; set; }
+        [StringLength(36)]
+        public string? PlaceId { get; set; }
     }
 } 

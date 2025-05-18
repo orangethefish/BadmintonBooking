@@ -1,33 +1,53 @@
-// This file can be empty as we're using Tailwind CSS for styling
+/* Custom styles for Material components */
+::ng-deep {
+  .mat-mdc-form-field {
+    width: 100%;
+  }
 
-.pricing-config-card {
-  border-left: 4px solid #3f51b5;
-  margin-bottom: 1rem;
+  .mat-mdc-form-field-appearance-outline .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .mat-mdc-select-panel {
+    max-height: 300px;
+  }
+
+  .mat-mdc-select-value {
+    font-size: 14px;
+  }
+
+  .mat-mdc-option {
+    font-size: 14px;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    padding: 0;
+  }
+
+  .mat-mdc-form-field-error {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* Custom styles for day selector */
+.day-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.5rem;
 }
 
-.time-field {
-  width: 100px;
-}
-
-mat-spinner {
-  display: inline-block;
-  margin-right: 8px;
-}
-
-.alert {
-  padding: 0.75rem 1.25rem;
-  margin-bottom: 1rem;
-  border: 1px solid transparent;
-  border-radius: 0.25rem;
-}
-
-.alert-danger {
-  color: #721c24;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
+/* Improve checkbox appearance */
+input[type="checkbox"] {
+  &:checked {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+  }
+  
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #4f46e5;
+  }
 }

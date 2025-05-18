@@ -1,118 +1,129 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="max-w-2xl mx-auto">
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-2">Create New Facility</h1>
-      <div class="w-full bg-gray-200 rounded-full h-2.5">
-        <div class="bg-green-600 h-2.5 rounded-full" style="width: 50%"></div>
+<div class="container mx-auto px-4 py-8 font-sans">
+  <div class="max-w-3xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
+    <div class="p-6 md:p-8">
+      <div class="mb-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3" i18n>Create New Facility</h1>
+        <div class="w-full bg-gray-200 rounded-full h-2.5">
+          <div class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500 ease-out" [style.width.%]="50"></div>
+        </div>
+        <p class="text-sm text-gray-600 mt-2" i18n>Step 1 of 2: Facility Details</p>
       </div>
-      <p class="text-gray-600 mt-2">Step 1 of 2: Facility Details</p>
-    </div>
 
-    <form [formGroup]="facilityForm" (ngSubmit)="onSubmit()" class="space-y-6">
-      <div>
-        <label for="mapsUrl" class="block text-sm font-medium text-gray-700">Google Maps URL</label>
-        <div class="flex gap-2">
+      <form [formGroup]="facilityForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div>
+          <label for="mapsUrl" class="block text-sm font-medium text-gray-700 mb-1" i18n>Google Maps URL</label>
+          <div class="flex items-center gap-3">
+            <input
+              type="text"
+              id="mapsUrl"
+              formControlName="mapsUrl"
+              i18n-placeholder placeholder="Paste Google Maps URL here"
+              class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+            <button 
+              type="button" 
+              class="inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-75 disabled:cursor-not-allowed whitespace-nowrap"
+              (click)="processMapUrl()"
+              [disabled]="!facilityForm.get('mapsUrl')?.value || processingUrl"
+            >
+              <span *ngIf="processingUrl" class="mr-2">
+                <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </span>
+              <span i18n>Verify</span>
+            </button>
+          </div>
+          <p class="mt-1 text-xs text-gray-500" i18n>Paste a Google Maps URL to automatically extract location information.</p>
+        </div>
+        
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700 mb-1" i18n>Facility Name</label>
           <input
             type="text"
-            id="mapsUrl"
-            formControlName="mapsUrl"
-            placeholder="Paste Google Maps URL here"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+            id="name"
+            formControlName="name"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            [ngClass]="{'border-red-400 focus:border-red-500 focus:ring-red-500': facilityForm.get('name')?.invalid && facilityForm.get('name')?.touched}"
           >
-          <button 
-            type="button" 
-            class="mt-1 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            (click)="processMapUrl()"
-            [disabled]="!facilityForm.get('mapsUrl')?.value || processingUrl"
+          <div *ngIf="facilityForm.get('name')?.invalid && facilityForm.get('name')?.touched" class="mt-1 text-xs text-red-600">
+            <span *ngIf="facilityForm.get('name')?.errors?.['required']" i18n>Facility name is required.</span>
+            <span *ngIf="facilityForm.get('name')?.errors?.['maxlength']" i18n>Name cannot exceed 100 characters.</span>
+          </div>
+        </div>
+
+        <div>
+          <label for="address" class="block text-sm font-medium text-gray-700 mb-1" i18n>Address</label>
+          <textarea
+            id="address"
+            formControlName="address"
+            rows="3"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            [ngClass]="{'border-red-400 focus:border-red-500 focus:ring-red-500': facilityForm.get('address')?.invalid && facilityForm.get('address')?.touched}"
+          ></textarea>
+          <div *ngIf="facilityForm.get('address')?.invalid && facilityForm.get('address')?.touched" class="mt-1 text-xs text-red-600">
+            <span *ngIf="facilityForm.get('address')?.errors?.['required']" i18n>Address is required.</span>
+            <span *ngIf="facilityForm.get('address')?.errors?.['maxlength']" i18n>Address cannot exceed 500 characters.</span>
+          </div>
+        </div>
+
+        <div>
+          <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-1" i18n>Phone Number</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            [ngClass]="{'border-red-400 focus:border-red-500 focus:ring-red-500': facilityForm.get('phoneNumber')?.invalid && facilityForm.get('phoneNumber')?.touched}"
           >
-            <span *ngIf="processingUrl" class="mr-2">
+          <div *ngIf="facilityForm.get('phoneNumber')?.invalid && facilityForm.get('phoneNumber')?.touched" class="mt-1 text-xs text-red-600">
+            <span *ngIf="facilityForm.get('phoneNumber')?.errors?.['required']" i18n>Phone number is required.</span>
+            <span *ngIf="facilityForm.get('phoneNumber')?.errors?.['maxlength']" i18n>Phone number cannot exceed 20 characters.</span>
+          </div>
+        </div>
+
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-1" i18n>Description (Optional)</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="4"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          ></textarea>
+        </div>
+
+        <div *ngIf="error" class="mt-4 p-3 bg-red-50 border border-red-300 text-red-700 rounded-md text-sm">
+          {{ error }}
+        </div>
+
+        <div class="pt-5 flex justify-end">
+          <button
+            type="submit"
+            [disabled]="facilityForm.invalid || isLoading"
+            class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed min-w-[180px]"
+          >
+            <span *ngIf="isLoading" class="mr-2">
               <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             </span>
-            Verify
+            <span i18n>Next: Add Courts</span>
           </button>
         </div>
-        <p class="text-xs text-gray-500 mt-1">Paste a Google Maps URL to automatically extract location information</p>
-      </div>
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Facility Name</label>
-        <input
-          type="text"
-          id="name"
-          formControlName="name"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-          [ngClass]="{'border-red-500': facilityForm.get('name')?.invalid && facilityForm.get('name')?.touched}"
-        >
-        <div *ngIf="facilityForm.get('name')?.invalid && facilityForm.get('name')?.touched" class="text-red-500 text-sm mt-1">
-          <span *ngIf="facilityForm.get('name')?.errors?.['required']">Facility name is required</span>
-          <span *ngIf="facilityForm.get('name')?.errors?.['maxlength']">Name cannot exceed 100 characters</span>
-        </div>
-      </div>
+      </form>
+    </div>
+  </div> 
 
-      <div>
-        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-        <textarea
-          id="address"
-          formControlName="address"
-          rows="3"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-          [ngClass]="{'border-red-500': facilityForm.get('address')?.invalid && facilityForm.get('address')?.touched}"
-        ></textarea>
-        <div *ngIf="facilityForm.get('address')?.invalid && facilityForm.get('address')?.touched" class="text-red-500 text-sm mt-1">
-          <span *ngIf="facilityForm.get('address')?.errors?.['required']">Address is required</span>
-          <span *ngIf="facilityForm.get('address')?.errors?.['maxlength']">Address cannot exceed 500 characters</span>
-        </div>
+  <div class="mt-8 max-w-3xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
+    <div class="p-6 md:p-8">
+      <h2 class="text-xl font-semibold text-gray-700 mb-4" i18n>Facility Location</h2>
+      <div class="map-container h-96 w-full rounded-md overflow-hidden border border-gray-200">
+        <google-map [center]="center" [zoom]="zoom" height="100%" width="100%">
+          <map-marker *ngFor="let marker of markers" [position]="marker"></map-marker>
+        </google-map>
       </div>
-
-      <div>
-        <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
-        <input
-          type="tel"
-          id="phoneNumber"
-          formControlName="phoneNumber"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-          [ngClass]="{'border-red-500': facilityForm.get('phoneNumber')?.invalid && facilityForm.get('phoneNumber')?.touched}"
-        >
-        <div *ngIf="facilityForm.get('phoneNumber')?.invalid && facilityForm.get('phoneNumber')?.touched" class="text-red-500 text-sm mt-1">
-          <span *ngIf="facilityForm.get('phoneNumber')?.errors?.['required']">Phone number is required</span>
-          <span *ngIf="facilityForm.get('phoneNumber')?.errors?.['maxlength']">Phone number cannot exceed 20 characters</span>
-        </div>
-      </div>
-
-      <div>
-        <label for="description" class="block text-sm font-medium text-gray-700">Description (Optional)</label>
-        <textarea
-          id="description"
-          formControlName="description"
-          rows="4"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-        ></textarea>
-      </div>
-
-      <div *ngIf="error" class="text-red-500 text-sm mt-2">{{ error }}</div>
-
-      <div class="flex justify-end space-x-4">
-        <button
-          type="submit"
-          [disabled]="facilityForm.invalid || isLoading"
-          class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
-        >
-          <span *ngIf="isLoading" class="mr-2">
-            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          </span>
-          Next: Add Courts
-        </button>
-      </div>
-    </form>
+    </div>
   </div>
-</div> 
-<div class="map-container mt-8" style="height: 400px; width: 100%;">
-  <google-map [center]="center" [zoom]="zoom" height="100%" width="100%">
-    <map-marker *ngFor="let marker of markers" [position]="marker"></map-marker>
-  </google-map>
 </div>

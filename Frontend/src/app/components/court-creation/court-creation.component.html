@@ -1,132 +1,164 @@
-<div class="container p-4">
-  <div *ngIf="!facilityInfo" class="d-flex justify-content-center">
-    <mat-spinner></mat-spinner>
+<div class="container mx-auto p-4 font-sans">
+  <!-- Loading Spinner -->
+  <div *ngIf="!facilityInfo" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-600"></div>
   </div>
 
-  <div *ngIf="facilityInfo">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Create Courts for {{ facilityInfo?.name }}</mat-card-title>
-        <mat-card-subtitle>{{ facilityInfo?.address }}</mat-card-subtitle>
-      </mat-card-header>
+  <div *ngIf="facilityInfo" class="bg-white shadow-xl rounded-lg overflow-hidden">
+    <div class="p-6 md:p-8">
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800" i18n>Create Courts for {{ facilityInfo?.name }}</h1>
+        <p class="text-sm text-gray-600 mt-1 mb-3">{{ facilityInfo?.address }}</p>
+        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+          <div class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 100%"></div>
+        </div>
+        <p class="text-sm text-gray-600 mb-1" i18n>Step 2 of 2: Court Details</p>
+      </div>
       
-      <mat-card-content>
-        <form [formGroup]="courtForm" (ngSubmit)="onSubmit()">
-          <div class="row">
-            <div class="col-md-6">
-              <mat-form-field appearance="outline" class="w-100 mt-3">
-                <mat-label>Base Name</mat-label>
-                <input matInput formControlName="baseName" placeholder="Court" required>
-                <mat-error *ngIf="courtForm.get('baseName')?.errors?.['required']">Base name is required</mat-error>
-                <mat-error *ngIf="courtForm.get('baseName')?.errors?.['maxlength']">Maximum 50 characters</mat-error>
-              </mat-form-field>
-            </div>
-            
-            <div class="col-md-6">
-              <mat-form-field appearance="outline" class="w-100 mt-3">
-                <mat-label>Number of Courts</mat-label>
-                <input matInput type="number" formControlName="numberOfCourts" min="1" max="100" required>
-                <mat-error *ngIf="courtForm.get('numberOfCourts')?.errors?.['required']">Number of courts is required</mat-error>
-                <mat-error *ngIf="courtForm.get('numberOfCourts')?.errors?.['min']">Minimum 1 court</mat-error>
-                <mat-error *ngIf="courtForm.get('numberOfCourts')?.errors?.['max']">Maximum 100 courts</mat-error>
-              </mat-form-field>
+      <form [formGroup]="courtForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="baseName" class="block text-sm font-medium text-gray-700 mb-1" i18n>Base Name</label>
+            <input type="text" id="baseName" formControlName="baseName" i18n-placeholder placeholder="Court"
+                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                   required>
+            <div *ngIf="courtForm.get('baseName')?.touched && courtForm.get('baseName')?.errors" class="mt-1 text-xs text-red-600">
+              <span *ngIf="courtForm.get('baseName')?.errors?.['required']" i18n>Base name is required</span>
+              <span *ngIf="courtForm.get('baseName')?.errors?.['maxlength']" i18n>Maximum 50 characters</span>
             </div>
           </div>
           
-          <div class="mt-4">
-            <h3>Pricing Configurations</h3>
-            <p class="text-muted">Define pricing configurations for all days of the week. All time periods must be covered (from 00:00 to 24:00) without overlaps.</p>
-            
-            <div *ngIf="courtForm.errors?.['overlappingTimes']" class="alert alert-danger">
-              There are overlapping time periods for one or more days. Please fix this before continuing.
+          <div>
+            <label for="numberOfCourts" class="block text-sm font-medium text-gray-700 mb-1" i18n>Number of Courts</label>
+            <input type="number" id="numberOfCourts" formControlName="numberOfCourts" min="1" max="100"
+                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                   required>
+            <div *ngIf="courtForm.get('numberOfCourts')?.touched && courtForm.get('numberOfCourts')?.errors" class="mt-1 text-xs text-red-600">
+              <span *ngIf="courtForm.get('numberOfCourts')?.errors?.['required']" i18n>Number of courts is required</span>
+              <span *ngIf="courtForm.get('numberOfCourts')?.errors?.['min']" i18n>Minimum 1 court</span>
+              <span *ngIf="courtForm.get('numberOfCourts')?.errors?.['max']" i18n>Maximum 100 courts</span>
             </div>
-            
-            <div *ngIf="courtForm.errors?.['gapInTimes']" class="alert alert-danger">
-              All days must have continuous coverage from 00:00 to 24:00. Please fix any gaps in your time configurations.
-            </div>
-            
-            <div formArrayName="pricingConfigurations">
-              <mat-card *ngFor="let config of pricingConfigurations.controls; let i = index" class="mb-3 pricing-config-card">
-                <mat-card-content [formGroupName]="i">
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0">Configuration #{{ i + 1 }}</h4>
-                    <button mat-icon-button color="warn" type="button" (click)="removePricingConfiguration(i)" [disabled]="pricingConfigurations.length <= 1">
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
-                  
-                  <div class="row">
-                    <div class="col-md-12">
-                      <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Days of Week</mat-label>
-                        <mat-select formControlName="daysOfWeek" multiple required>
-                          <mat-option *ngFor="let day of daysOfWeek" [value]="day.value">
-                            {{ day.name }}
-                          </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="config.get('daysOfWeek')?.errors?.['required']">Please select at least one day</mat-error>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                  
-                  <div class="row">
-                    <div class="col-md-6">
-                      <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Start Time (HH:MM)</mat-label>
-                        <input matInput formControlName="startTime" placeholder="00:00" required>
-                        <mat-hint>Use format like 00:00, 08:30, 14:45</mat-hint>
-                        <mat-error *ngIf="config.get('startTime')?.errors?.['required']">Start time is required</mat-error>
-                        <mat-error *ngIf="config.get('startTime')?.errors?.['pattern']">Use format HH:MM (00:00-23:59)</mat-error>
-                      </mat-form-field>
-                    </div>
-                    
-                    <div class="col-md-6">
-                      <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>End Time (HH:MM)</mat-label>
-                        <input matInput formControlName="endTime" placeholder="24:00" required>
-                        <mat-hint>Use 24:00 for midnight (end of day)</mat-hint>
-                        <mat-error *ngIf="config.get('endTime')?.errors?.['required']">End time is required</mat-error>
-                        <mat-error *ngIf="config.get('endTime')?.errors?.['pattern']">Use format HH:MM (00:00-24:00)</mat-error>
-                      </mat-form-field>
-                    </div>
-                    
-                    <div *ngIf="config.errors?.['invalidTimeRange']" class="col-12">
-                      <div class="alert alert-danger">End time must be after start time</div>
-                    </div>
-                  </div>
-                  
-                  <div class="row">
-                    <div class="col-md-6">
-                      <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Price</mat-label>
-                        <input matInput type="number" formControlName="price" min="0" required>
-                        <mat-error *ngIf="config.get('price')?.errors?.['required']">Price is required</mat-error>
-                        <mat-error *ngIf="config.get('price')?.errors?.['min']">Price cannot be negative</mat-error>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </mat-card-content>
-              </mat-card>
+          </div>
+        </div>
+        
+        <div class="pt-6 border-t border-gray-200">
+          <h3 class="text-xl font-semibold text-gray-800 mb-1" i18n>Pricing Configurations</h3>
+          <p class="text-sm text-gray-600 mb-4" i18n>Define pricing configurations for all days of the week. All time periods must be covered (from 00:00 to 24:00) without overlaps.</p>
+          
+          <div *ngIf="courtForm.errors?.['overlappingTimes']" 
+               class="mb-4 p-4 bg-red-50 border border-red-300 text-red-700 rounded-md text-sm" i18n>
+            There are overlapping time periods for one or more days. Please fix this before continuing.
+          </div>
+          
+          <div *ngIf="courtForm.errors?.['gapInTimes']" 
+               class="mb-4 p-4 bg-red-50 border border-red-300 text-red-700 rounded-md text-sm" i18n>
+            All days must have continuous coverage from 00:00 to 24:00. Please fix any gaps in your time configurations.
+          </div>
+          
+          <div formArrayName="pricingConfigurations" class="space-y-6">
+            <div *ngFor="let config of pricingConfigurations.controls; let i = index" 
+                 [formGroupName]="i" 
+                 class="p-5 bg-gray-50 border border-gray-200 rounded-lg shadow-sm relative">
+
+              <div class="flex justify-between items-start mb-4">
+                <h4 class="text-lg font-medium text-gray-700" i18n>Configuration #{{ i + 1 }}</h4>
+                <button type="button" (click)="removePricingConfiguration(i)" [disabled]="pricingConfigurations.length <= 1"
+                        class="p-1.5 text-red-500 hover:text-red-700 disabled:text-gray-300 disabled:cursor-not-allowed rounded-md hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                  <!-- Using a simple text 'Remove' for now. Consider an SVG icon for Trash -->
+                  <span class="text-xs font-medium">Remove</span>
+                </button>
+              </div>
               
-              <button type="button" mat-stroked-button color="primary" (click)="addPricingConfiguration()" class="mt-2">
-                <mat-icon>add</mat-icon> Add Configuration
-              </button>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+                <div class="sm:col-span-2 lg:col-span-3">
+                  <div class="block text-sm font-medium text-gray-700 mb-2" i18n>Days of Week</div>
+                  
+                  <div class="day-selector border border-gray-300 rounded-md p-3 bg-white">
+                    <div *ngFor="let day of daysOfWeek" class="flex items-center">
+                      <input type="checkbox" [id]="'day_' + i + '_' + day.value" 
+                             [checked]="isDaySelected(i, day.value)"
+                             (change)="toggleDaySelection(i, day.value)"
+                             class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                      <label [for]="'day_' + i + '_' + day.value" 
+                             class="ml-2 block text-sm" 
+                             [class.font-semibold]="isDaySelected(i, day.value)"
+                             [class.text-indigo-700]="isDaySelected(i, day.value)"
+                             [class.text-gray-900]="!isDaySelected(i, day.value)">
+                        {{ day.name }}
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div *ngIf="config.get('daysOfWeek')?.touched && config.get('daysOfWeek')?.errors?.['required']" 
+                       class="mt-1 text-xs text-red-600" i18n>Please select at least one day</div>
+                </div>
+              
+                <div>
+                  <label [for]="'startTime' + i" class="block text-sm font-medium text-gray-700 mb-1" i18n>Start Time (HH:MM)</label>
+                  <input type="time" [id]="'startTime' + i" formControlName="startTime" i18n-placeholder placeholder="00:00"
+                         class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                         required>
+                  <p class="mt-1 text-xs text-gray-500" i18n>Use format like 00:00, 08:30, 14:45</p>
+                  <div *ngIf="config.get('startTime')?.touched && config.get('startTime')?.errors" class="mt-1 text-xs text-red-600">
+                    <span *ngIf="config.get('startTime')?.errors?.['required']" i18n>Start time is required</span>
+                    <span *ngIf="config.get('startTime')?.errors?.['pattern']" i18n>Use format HH:MM (00:00-23:59)</span>
+                  </div>
+                </div>
+            
+                <div>
+                  <label [for]="'endTime' + i" class="block text-sm font-medium text-gray-700 mb-1" i18n>End Time (HH:MM)</label>
+                  <input type="time" [id]="'endTime' + i" formControlName="endTime" i18n-placeholder placeholder="24:00"
+                         class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                         required>
+                  <p class="mt-1 text-xs text-gray-500" i18n>Use 24:00 for midnight (end of day)</p>
+                  <div *ngIf="config.get('endTime')?.touched && config.get('endTime')?.errors" class="mt-1 text-xs text-red-600">
+                    <span *ngIf="config.get('endTime')?.errors?.['required']" i18n>End time is required</span>
+                    <span *ngIf="config.get('endTime')?.errors?.['pattern']" i18n>Use format HH:MM (00:00-24:00)</span>
+                  </div>
+                </div>
+
+                <div *ngIf="config.errors?.['invalidTimeRange']" class="sm:col-span-2 lg:col-span-3">
+                  <div class="mt-1 p-3 bg-red-50 border border-red-300 text-red-700 rounded-md text-xs" i18n>End time must be after start time</div>
+                </div>
+            
+                <div class="lg:col-span-1">
+                  <label [for]="'price' + i" class="block text-sm font-medium text-gray-700 mb-1" i18n>Price</label>
+                  <input type="number" [id]="'price' + i" formControlName="price" min="0"
+                         class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                         required>
+                  <div *ngIf="config.get('price')?.touched && config.get('price')?.errors" class="mt-1 text-xs text-red-600">
+                    <span *ngIf="config.get('price')?.errors?.['required']" i18n>Price is required</span>
+                    <span *ngIf="config.get('price')?.errors?.['min']" i18n>Price cannot be negative</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <div class="mt-4 d-flex justify-content-between">
-            <!-- <button mat-button routerLink="/facility/{{facilityId}}" [disabled]="loading">Cancel</button> -->
-            <button mat-raised-button color="primary" type="submit" [disabled]="courtForm.invalid || loading">
-              <span *ngIf="!loading">Create Courts</span>
-              <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            
+            <button type="button" (click)="addPricingConfiguration()"
+                    class="mt-2 flex items-center px-4 py-2 border border-indigo-600 text-indigo-600 text-sm font-medium rounded-md hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              <!-- Simple plus for now, consider SVG icon -->
+              <span class="mr-2 text-lg">+</span> 
+              <span i18n>Add Configuration</span>
             </button>
           </div>
-          
-          <div *ngIf="error" class="alert alert-danger mt-3">
-            {{ error }}
-          </div>
-        </form>
-      </mat-card-content>
-    </mat-card>
+        </div>
+        
+        <div class="pt-6 flex justify-end items-center border-t border-gray-200">
+          <!-- <button type="button" routerLink="/facility/{{facilityId}}" [disabled]="loading"
+                  class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mr-3">
+            Cancel
+          </button> -->
+          <button type="submit" [disabled]="courtForm.invalid || loading"
+                  class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed min-w-[150px]">
+            <span *ngIf="!loading" i18n>Create Courts</span>
+            <div *ngIf="loading" class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+          </button>
+        </div>
+        
+        <div *ngIf="error" class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm">
+          {{ error }}
+        </div>
+      </form>
+    </div>
   </div>
 </div>
