@@ -318,6 +318,22 @@
           <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="9876543210123456789" datatype="html">
+        <source>Select days</source>
+        <target>Chọn ngày</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8562923633676883866" datatype="html">
+        <source>Select days</source>
+        <target>Chọn ngày</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/court-creation/court-creation.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="6508650412393549587" datatype="html">
         <source>Please select at least one day</source>
         <target>Vui lòng chọn ít nhất một ngày</target>
@@ -659,8 +675,7 @@
         <target>Cơ sở nổi bật</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
-          <context context-type="linenumber">25,26</context>
-        </context-group>
+          <context context-type="linenumber">25,26</context>        </context-group>
       </trans-unit>
       <trans-unit id="2659597622465390120" datatype="html">
         <source>Sports Center 1</source>
@@ -717,6 +732,35 @@
           <context context-type="sourcefile">src/app/components/landing/landing.component.html</context>
           <context context-type="linenumber">41,42</context>
         </context-group>
+      </trans-unit>
+      <!-- Days of week translations -->
+      <trans-unit id="1281018908591619263" datatype="html">
+        <source>Sunday</source>
+        <target>Chủ nhật</target>
+      </trans-unit>
+      <trans-unit id="3831673141785521891" datatype="html">
+        <source>Monday</source>
+        <target>Thứ hai</target>
+      </trans-unit>
+      <trans-unit id="6789498002614120671" datatype="html">
+        <source>Tuesday</source>
+        <target>Thứ ba</target>
+      </trans-unit>
+      <trans-unit id="6789498002614120672" datatype="html">
+        <source>Wednesday</source>
+        <target>Thứ tư</target>
+      </trans-unit>
+      <trans-unit id="6789498002614120673" datatype="html">
+        <source>Thursday</source>
+        <target>Thứ năm</target>
+      </trans-unit>
+      <trans-unit id="6789498002614120674" datatype="html">
+        <source>Friday</source>
+        <target>Thứ sáu</target>
+      </trans-unit>
+      <trans-unit id="6789498002614120675" datatype="html">
+        <source>Saturday</source>
+        <target>Thứ bảy</target>
       </trans-unit>
     </body>
   </file>

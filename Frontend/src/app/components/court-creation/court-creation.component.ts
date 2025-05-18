@@ -3,17 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl, Validat
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatOptionModule } from '@angular/material/core';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Keep snackbar for now, might be used for notifications
 import { CourtService, BatchCreateCourtRequest } from '../../services/court.service';
 import { PricingConfigurationFormData, PricingConfigurationRequest } from '../../models/court.model';
 import { Facility } from '../../models/facility.model';
@@ -25,17 +15,7 @@ import { FacilityService } from '../../services/facility.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatDividerModule,
-    MatIconModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule,
-    MatOptionModule
+    MatSnackBarModule // Keep snackbar for now
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './court-creation.component.html',
@@ -49,13 +29,13 @@ export class CourtCreationComponent implements OnInit {
   error: string | null = null;
   
   daysOfWeek = [
-    { value: 0, name: 'Sunday' },
-    { value: 1, name: 'Monday' },
-    { value: 2, name: 'Tuesday' },
-    { value: 3, name: 'Wednesday' },
-    { value: 4, name: 'Thursday' },
-    { value: 5, name: 'Friday' },
-    { value: 6, name: 'Saturday' }
+    { value: 0, name: $localize`Sunday` },
+    { value: 1, name: $localize`Monday` },
+    { value: 2, name: $localize`Tuesday` },
+    { value: 3, name: $localize`Wednesday` },
+    { value: 4, name: $localize`Thursday` },
+    { value: 5, name: $localize`Friday` },
+    { value: 6, name: $localize`Saturday` }
   ];
 
   constructor(
@@ -260,6 +240,32 @@ export class CourtCreationComponent implements OnInit {
       
       return null;
     };
+  }
+
+  // Methods for day selection checkboxes
+  isDaySelected(configIndex: number, dayValue: number): boolean {
+    const daysArray = this.pricingConfigurations.at(configIndex).get('daysOfWeek')?.value || [];
+    return daysArray.includes(dayValue);
+  }
+
+  toggleDaySelection(configIndex: number, dayValue: number): void {
+    const control = this.pricingConfigurations.at(configIndex).get('daysOfWeek');
+    if (!control) return;
+    
+    const currentValue = [...(control.value || [])];
+    const index = currentValue.indexOf(dayValue);
+    
+    if (index === -1) {
+      // Add the day
+      currentValue.push(dayValue);
+    } else {
+      // Remove the day
+      currentValue.splice(index, 1);
+    }
+    
+    // Update the form control
+    control.setValue(currentValue);
+    control.markAsTouched();
   }
 
   onSubmit(): void {
