@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using BadmintonBooking.API.Models;
 using BadmintonBooking.API.Services;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BadmintonBooking.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class FacilityController : ControllerBase
     {
         private readonly IFacilityService _facilityService;

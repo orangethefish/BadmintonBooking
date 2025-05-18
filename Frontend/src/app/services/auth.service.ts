@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, of } from 'rxjs';
+import { BehaviorSubject, Observable, tap, of, catchError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthResult, LoginRequest, RegisterRequest, User } from '../models/auth.model';
 import { Router } from '@angular/router';
@@ -39,24 +39,31 @@ export class AuthService {
       );
   }
 
-  logout(): Observable<any> {
+  logout(): void {
     // Call the backend logout endpoint if user is logged in
     if (this.currentUserValue) {
-      return this.http.post<any>(`${environment.apiUrl}/auth/logout`, {}).pipe(
+      this.http.post<any>(`${environment.apiUrl}/auth/logout`, {}).pipe(
         tap(() => {
+          // Clear user data and navigate to login page
           localStorage.removeItem('currentUser');
           this.currentUserSubject.next(null);
+          this.router.navigate(['/auth/login']);
+        }),
+        catchError((error: any) => {
+          // Even if the logout API call fails, clear local storage and redirect
+          console.error('Logout error:', error);
+          localStorage.removeItem('currentUser');
+          this.currentUserSubject.next(null);
+          this.router.navigate(['/auth/login']);
+          return of({ message: 'Logged out successfully' });
         })
-      );
+      ).subscribe();
+    } else {
+      // If no user is logged in, just clear local storage and redirect
+      localStorage.removeItem('currentUser');
+      this.currentUserSubject.next(null);
+      this.router.navigate(['/auth/login']);
     }
-    
-    // If no user is logged in, just clear local storage
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-    return new Observable(observer => {
-      observer.next({ message: 'Logged out successfully' });
-      observer.complete();
-    });
   }
 
   isLoggedIn(): boolean {
