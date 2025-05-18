@@ -1,6 +1,7 @@
 using BadmintonBooking.API.Models;
 using BadmintonBooking.API.Data;
 using Microsoft.EntityFrameworkCore;
+using BadmintonBooking.API.Services.Interfaces;
 
 namespace BadmintonBooking.API.Services
 {
