@@ -18,7 +18,7 @@ namespace BadmintonBooking.API.Services
             _logger = logger;
         }
 
-        public string GenerateJwtToken(User user)
+        public string GenerateJwtToken(User user, List<string> roles)
         {
             try
             {
@@ -31,8 +31,13 @@ namespace BadmintonBooking.API.Services
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role)
                 };
+
+                // Add each role as a separate claim
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {

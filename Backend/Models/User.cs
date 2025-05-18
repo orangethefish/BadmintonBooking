@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BadmintonBooking.API.Models
@@ -19,9 +20,7 @@ namespace BadmintonBooking.API.Models
         [Required]
         public string PasswordHash { get; set; }
         
-        [Required]
-        [MaxLength(50)]
-        public string Role { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
         
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
