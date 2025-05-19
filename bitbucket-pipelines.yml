@@ -1,16 +1,40 @@
-image: atlassian/default-image:4
+image: mcr.microsoft.com/dotnet/core/sdk:3.1
 
 clone:
   depth: full
 
 pipelines:
-  default:    
+  default:
+    - parallel:
+        - step:
+            name: Build and Test
+            caches:
+              - dotnetcore
+            script:
+              - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
+              - dotnet restore
+              - dotnet build --no-restore --configuration Release
+              - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
+            artifacts:
+              - test-reports/**
+        - step:
+            name: Lint the code
+            caches:
+              - dotnetcore
+            script:
+              - export SOLUTION_NAME=BadmintonBooking
+              - export REPORTS_PATH=linter-reports
+              - dotnet new tool-manifest
+              - dotnet tool install JetBrains.ReSharper.GlobalTools
+              - dotnet tool restore
+              - dotnet jb inspectcode ${SOLUTION_NAME}.sln --output="${REPORTS_PATH}/jb-${BITBUCKET_BUILD_NUMBER}.xml"
+            artifacts:
+              - linter-reports/**
+    
     - step:
+        name: Mirror to GitHub
+        image: atlassian/default-image:4
         script:
-          - 'for i in $(git for-each-ref --format="%(refname:short)" refs/remotes/origin); do 
-              echo "Processing branch: $i"; 
-              git show-ref --verify --quiet refs/heads/${i#origin/} || git switch --track $i || echo "Could not switch to $i, continuing..."; 
-            done; 
-            git switch --track origin/master || echo "No master branch found, skipping..."; 
-            git switch --track origin/develop || echo "No develop branch found, skipping..."; 
-            git push --mirror git@github.com:orangethefish/BadmintonBooking.git'
+          - git fetch --all
+          - git fetch --tags
+          - git push --mirror git@github.com:orangethefish/BadmintonBooking.git
