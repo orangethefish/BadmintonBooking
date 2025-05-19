@@ -1,15 +1,16 @@
 image: atlassian/default-image:4
 
 clone:
-
   depth: full
 
 pipelines:
-
   default:    
-
     - step:
-
         script:
-
-          - 'for i in $(git for-each-ref --format="%(refname:short)" --no-merged=origin/HEAD refs/remotes/origin); do echo $i; git show-ref --verify --quiet refs/heads/${i#origin/} || git switch --track $i; done; git switch --track origin/master; git switch --track origin/develop; git push --mirror git@github.com:orangethefish/BadmintonBooking.git'          
+          - 'for i in $(git for-each-ref --format="%(refname:short)" --no-merged=origin/HEAD refs/remotes/origin); do 
+              echo "Processing branch: $i"; 
+              git show-ref --verify --quiet refs/heads/${i#origin/} || git switch --track $i || echo "Could not switch to $i, continuing..."; 
+            done; 
+            git switch --track origin/master || echo "No master branch found, skipping..."; 
+            git switch --track origin/develop || echo "No develop branch found, skipping..."; 
+            git push --mirror git@github.com:orangethefish/BadmintonBooking.git'
