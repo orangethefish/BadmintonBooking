@@ -7,7 +7,7 @@ pipelines:
   default:    
     - step:
         script:
-          - 'for i in $(git for-each-ref --format="%(refname:short)" --no-merged=origin/HEAD refs/remotes/origin); do 
+          - 'for i in $(git for-each-ref --format="%(refname:short)" refs/remotes/origin); do 
               echo "Processing branch: $i"; 
               git show-ref --verify --quiet refs/heads/${i#origin/} || git switch --track $i || echo "Could not switch to $i, continuing..."; 
             done; 
