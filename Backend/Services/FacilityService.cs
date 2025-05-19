@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Net.Http;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+using BadmintonBooking.API.Services.Interfaces;
 
 namespace BadmintonBooking.API.Services
 {

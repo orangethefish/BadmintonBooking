@@ -1,6 +1,6 @@
 using BadmintonBooking.API.Models;
 
-namespace BadmintonBooking.API.Services
+namespace BadmintonBooking.API.Services.Interfaces
 {
     public interface IFacilityService
     {

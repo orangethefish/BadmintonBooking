@@ -7,7 +7,7 @@ using BadmintonBooking.API.Services.Interfaces;
 
 namespace BadmintonBooking.API.Services
 {
-    public class TokenService
+    public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
         private readonly ILoggerService _logger;

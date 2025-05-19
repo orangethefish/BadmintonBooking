@@ -11,13 +11,13 @@ namespace BadmintonBooking.API.Services
     public class AuthService : IAuthService
     {
         private readonly ApplicationDbContext _context;
-        private readonly TokenService _tokenService;
+        private readonly ITokenService _tokenService;
         private readonly ILoggerService _logger;
         private readonly IRoleService _roleService;
 
         public AuthService(
             ApplicationDbContext context, 
-            TokenService tokenService, 
+            ITokenService tokenService, 
             ILoggerService logger,
             IRoleService roleService)
         {
