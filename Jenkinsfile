@@ -13,11 +13,6 @@ pipeline {
         DOCKER_IMAGE_NAME = 'duyhoa2210/badminton-booking'
     }
     
-    options {
-        // Clone with full history as specified in original pipeline
-        cloneOptions([depth: 0])
-    }
-    
     stages {
         stage('Build and Test') {
             steps {
