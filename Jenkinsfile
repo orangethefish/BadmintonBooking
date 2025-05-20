@@ -11,6 +11,7 @@ pipeline {
         LINTER_REPORTS_PATH   = 'linter-reports'
         DOCKER_CREDENTIALS    = credentials('dockerhub-credentials-id')
         DOCKER_IMAGE_NAME     = 'duyhoa2210/badminton-booking'
+        DOTNET_CLI_HOME = "/tmp/DOTNET_CLI_HOME"
     }
 
     stages {
