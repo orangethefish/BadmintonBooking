@@ -53,15 +53,17 @@ pipeline {
     }
     
     post {
-       always {
-               // Archive test and linting reports
-               archiveArtifacts artifacts: 'test-reports/**,linter-reports/**', allowEmptyArchive: true
-               junit 'test-reports/**/junit.xml'
-               
-               // Clean up Docker images after push
-               sh "docker rmi ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER} || true"
-               sh "docker rmi ${DOCKER_IMAGE_NAME}:latest || true"
-       }
-   }
-
+        always {
+            node { // <--- Add this node block
+                // Archive test and linting reports
+                archiveArtifacts artifacts: 'test-reports/**,linter-reports/**', allowEmptyArchive: true
+                junit 'test-reports/**/junit.xml'
+                
+                // Clean up Docker images after push
+                // These sh steps also need an agent context
+                sh "docker rmi ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER} || true"
+                sh "docker rmi ${DOCKER_IMAGE_NAME}:latest || true"
+            } // <--- Close the node block
+        }
+    }
 }
