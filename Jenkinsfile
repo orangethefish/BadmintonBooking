@@ -54,7 +54,6 @@ pipeline {
     
     post {
        always {
-           node {
                // Archive test and linting reports
                archiveArtifacts artifacts: 'test-reports/**,linter-reports/**', allowEmptyArchive: true
                junit 'test-reports/**/junit.xml'
@@ -62,7 +61,6 @@ pipeline {
                // Clean up Docker images after push
                sh "docker rmi ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER} || true"
                sh "docker rmi ${DOCKER_IMAGE_NAME}:latest || true"
-           }
        }
    }
 
