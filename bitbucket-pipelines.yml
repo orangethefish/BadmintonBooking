@@ -32,14 +32,20 @@ pipelines:
               - linter-reports/**
     
     - step:
-        name: Build and Push Docker Image
+        name: Build and Push Docker Images
         services:
           - docker
         script:
+          - apk add --no-cache docker-compose
           - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
-          - export IMAGE_NAME=${DOCKER_HUB_USER}/badmintonbooking:${BITBUCKET_BUILD_NUMBER}
-          - docker build -t $IMAGE_NAME .
-          - docker push $IMAGE_NAME
+          # Build both images
+          - docker compose build
+          # Tag and push frontend
+          - docker tag src_frontend ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
+          - docker push ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
+          # Tag and push backend
+          - docker tag src_backend ${DOCKER_HUB_USER}/badmintonbooking-backend:${BITBUCKET_BUILD_NUMBER}
+          - docker push ${DOCKER_HUB_USER}/badmintonbooking-backend:${BITBUCKET_BUILD_NUMBER}
 
     - step:
         name: Mirror to GitHub
