@@ -32,6 +32,17 @@ pipelines:
               - linter-reports/**
     
     - step:
+        name: Build and Push Docker Image
+        image: docker:24.0.7
+        services:
+          - docker
+        script:
+          - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+          - export IMAGE_NAME=${DOCKER_HUB_USER}/badmintonbooking:${BITBUCKET_BUILD_NUMBER}
+          - docker build -t $IMAGE_NAME .
+          - docker push $IMAGE_NAME
+
+    - step:
         name: Mirror to GitHub
         image: atlassian/default-image:4
         script:
