@@ -33,13 +33,12 @@ pipelines:
     
     - step:
         name: Build and Push Docker Image
-        image: docker:24.0.7
         services:
           - docker
         script:
           - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
           - export IMAGE_NAME=${DOCKER_HUB_USER}/badmintonbooking:${BITBUCKET_BUILD_NUMBER}
-          - docker build -t $IMAGE_NAME .
+          - docker build -t $IMAGE_NAME -t ${DOCKER_HUB_USER}/badmintonbooking:latest.
           - docker push $IMAGE_NAME
 
     - step:
