@@ -1,0 +1,173 @@
+.court-edit-dialog {
+  @apply w-full max-w-4xl max-h-screen flex flex-col bg-white rounded-lg shadow-xl;
+}
+
+.dialog-header {
+  @apply flex justify-between items-center p-6 border-b border-gray-200;
+  
+  .dialog-title {
+    @apply text-xl font-semibold text-gray-900;
+  }
+  
+  .close-btn {
+    @apply p-2 text-gray-400 hover:text-gray-600 rounded-md hover:bg-gray-100 transition-colors duration-200;
+  }
+}
+
+.dialog-content {
+  @apply flex-1 overflow-y-auto p-6;
+}
+
+.court-form {
+  @apply space-y-8;
+}
+
+.form-section {
+  .section-title {
+    @apply text-lg font-medium text-gray-900 mb-4;
+  }
+  
+  .section-header {
+    @apply flex justify-between items-center mb-6;
+    
+    .section-title {
+      @apply mb-0;
+    }
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.pricing-configurations {
+  @apply space-y-6;
+}
+
+.pricing-config-card {
+  @apply border border-gray-200 rounded-lg overflow-hidden bg-gray-50;
+  
+  .card-header {
+    @apply flex justify-between items-center p-4 bg-gray-100 border-b border-gray-200;
+    
+    .config-title {
+      @apply text-base font-medium text-gray-900;
+    }
+  }
+  
+  .card-content {
+    @apply p-4 space-y-4 bg-white;
+  }
+}
+
+.form-field {
+  @apply space-y-2;
+}
+
+.day-selector {
+  @apply grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2;
+}
+
+.time-range-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  
+  .time-field {
+    flex: 1;
+  }
+  
+  .time-separator {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0 8px;
+  }
+}
+
+.price-field {
+  max-width: 200px;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.form-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #f44336;
+  font-size: 0.875rem;
+  padding: 12px;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+  margin-top: 16px;
+  
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.dialog-actions {
+  @apply flex justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .court-edit-dialog {
+    @apply max-w-full max-h-full rounded-none;
+  }
+  
+  .dialog-header {
+    @apply p-4;
+    
+    .dialog-title {
+      @apply text-lg;
+    }
+  }
+  
+  .dialog-content {
+    @apply p-4;
+  }
+  
+  .section-header {
+    @apply flex-col items-stretch gap-3;
+  }
+  
+  .time-range-row {
+    flex-direction: column;
+    gap: 12px;
+    
+    .time-separator {
+      text-align: center;
+    }
+  }
+  
+  .day-selector {
+    @apply grid-cols-1;
+  }
+  
+  .dialog-actions {
+    @apply flex-col-reverse p-4;
+    
+    button {
+      @apply w-full;
+    }
+  }
+}
+
+// Custom checkbox styling for better appearance
+input[type="checkbox"] {
+  &:checked {
+    @apply bg-indigo-600 border-indigo-600;
+  }
+  
+  &:focus {
+    @apply ring-2 ring-indigo-500 ring-offset-2;
+  }
+} 

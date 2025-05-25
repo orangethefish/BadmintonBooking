@@ -1,0 +1,178 @@
+<div class="court-overview-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <button class="back-btn" (click)="onBackToFacilities()">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Facilities
+      </button>
+      
+      <div class="facility-info" *ngIf="facility">
+        <h1 class="title">{{ facility.name }} - Courts</h1>
+        <p class="subtitle">{{ facility.address }}</p>
+      </div>
+    </div>
+    
+    <button class="btn-primary create-btn" (click)="onCreateCourt()">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+      </svg>
+      Add Courts
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading courts...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <div class="error-card">
+      <svg class="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+      </svg>
+      <h3>Error Loading Courts</h3>
+      <p>{{ error }}</p>
+      <button class="btn-secondary" (click)="loadCourts()">Try Again</button>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && courts.length === 0" class="empty-container">
+    <div class="empty-card">
+      <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+      </svg>
+      <h3>No Courts Yet</h3>
+      <p>Create courts for this facility to start managing bookings and pricing.</p>
+      <button class="btn-primary" (click)="onCreateCourt()">Create Your First Court</button>
+    </div>
+  </div>
+
+  <!-- Courts Grid -->
+  <div *ngIf="!loading && !error && courts.length > 0" class="courts-grid">
+    <div 
+      *ngFor="let court of courts" 
+      class="court-card"
+      [class.menu-active]="activeMenuCourtId === court.id">
+      
+      <!-- Card Header -->
+      <div class="card-header">
+        <div class="court-title">
+          <h3 class="court-name">{{ court.name }}</h3>
+          <span class="court-status" [class.active]="court.isActive" [class.inactive]="!court.isActive">
+            {{ court.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </div>
+        
+        <!-- Court Menu -->
+        <div class="menu-container">
+          <button 
+            class="menu-btn"
+            (click)="onMenuClick($event, court.id)"
+            [class.active]="activeMenuCourtId === court.id">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+            </svg>
+          </button>
+          
+          <!-- Dropdown Menu -->
+          <div 
+            *ngIf="activeMenuCourtId === court.id" 
+            class="dropdown-menu">
+            <button 
+              class="menu-item"
+              (click)="onEditCourt(court); $event.stopPropagation()">
+              <svg class="menu-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+              Edit Court
+            </button>
+            <button 
+              class="menu-item"
+              (click)="onViewBookings(court); $event.stopPropagation()">
+              <svg class="menu-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              View Bookings
+            </button>
+            <button 
+              class="menu-item delete-item"
+              (click)="onDeleteCourt(court); $event.stopPropagation()">
+              <svg class="menu-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+              Delete Court
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Content -->
+      <div class="card-content">
+        <!-- Working Hours -->
+        <div class="info-item">
+          <svg class="info-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <div class="info-content">
+            <span class="info-label">Working Hours</span>
+            <span class="info-text">{{ getWorkingHours(court.pricingConfigurations || []) }}</span>
+          </div>
+        </div>
+
+        <!-- Pricing Information -->
+        <div class="pricing-section">
+          <div class="pricing-header">
+            <svg class="info-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+            </svg>
+            <span class="info-label">Pricing Schedule</span>
+          </div>
+          
+          <div *ngIf="court.pricingConfigurations && court.pricingConfigurations.length > 0; else noPricing" class="pricing-content">
+            <ng-container *ngFor="let dayGroup of groupPricingByDay(court.pricingConfigurations)">
+              <div class="day-pricing">
+                <div class="day-header">
+                  <span class="day-name">{{ dayGroup.key }}</span>
+                  <!-- <span class="day-price-range">{{ formatPriceRange(dayGroup.value) }}</span> -->
+                </div>
+                
+                <div class="time-slots">
+                  <div *ngFor="let pricing of dayGroup.value" class="time-slot">
+                    <span class="time-range">
+                      {{ formatTime(pricing.startTime) }} - {{ formatTime(pricing.endTime) }}
+                    </span>
+                    <span class="price">${{ pricing.price }}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <ng-template #noPricing>
+            <div class="no-pricing">
+              <span class="no-pricing-text">No pricing configured</span>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="card-footer">
+        <span class="created-date">Created {{ court.createdAt | date:'MMM dd, yyyy' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Click outside to close menu -->
+<div 
+  *ngIf="activeMenuCourtId !== null" 
+  class="overlay"
+  (click)="onClickOutside()">
+</div> 
