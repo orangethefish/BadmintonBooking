@@ -70,6 +70,25 @@ namespace BadmintonBooking.API.Services
             {
                 var court = await _context.Courts
                     .Include(c => c.Facility)
+                    .Include(c => c.PricingConfigurations)
+                    .FirstOrDefaultAsync(c => c.Id == id);
+                
+                return court;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                throw new Exception($"Error retrieving court with id {id}: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<Court> GetCourtByIdAsync(int id)
+        {
+            try
+            {
+                var court = await _context.Courts
+                    .Include(c => c.Facility)
+                    .Include(c => c.PricingConfigurations)
                     .FirstOrDefaultAsync(c => c.Id == id);
                 
                 return court;
@@ -87,6 +106,7 @@ namespace BadmintonBooking.API.Services
             {
                 return await _context.Courts
                     .Where(c => c.FacilityId == facilityId)
+                    .Include(c => c.PricingConfigurations.OrderBy(p => p.DayOfWeek))
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -116,22 +136,47 @@ namespace BadmintonBooking.API.Services
             }
         }
 
-        public async Task<bool> UpdateCourtAsync(int id, UpdateCourtRequest request)
+        public async Task<Court> UpdateCourtAsync(int id, string name, List<PricingConfigurationRequest> pricingConfigurations)
         {
             try
             {
-                var court = await _context.Courts.FindAsync(id);
+                var court = await _context.Courts
+                    .Include(c => c.PricingConfigurations)
+                    .FirstOrDefaultAsync(c => c.Id == id);
                 
                 if (court == null)
-                    return false;
+                    throw new ArgumentException($"Court with id {id} not found");
                 
-                court.Name = request.Name ?? court.Name;
-                // court.IsActive = request.IsActive ?? court.IsActive;
+                // Update court name
+                court.Name = name;
                 court.UpdatedAt = DateTime.UtcNow;
                 
-                _context.Courts.Update(court);
+                // Remove existing pricing configurations
+                if (court.PricingConfigurations != null && court.PricingConfigurations.Any())
+                {
+                    _context.PricingConfigurations.RemoveRange(court.PricingConfigurations);
+                }
+                
+                // Add new pricing configurations
+                court.PricingConfigurations = new List<PricingConfiguration>();
+                foreach (var config in pricingConfigurations)
+                {
+                    court.PricingConfigurations.Add(new PricingConfiguration
+                    {
+                        CourtId = court.Id,
+                        DayOfWeek = config.DayOfWeek,
+                        StartTime = TimeSpan.Parse(config.StartTime),
+                        EndTime = TimeSpan.Parse(config.EndTime),
+                        Price = config.Price,
+                        IsActive = true,
+                        CreatedAt = DateTime.UtcNow
+                    });
+                }
+                
                 await _context.SaveChangesAsync();
-                return true;
+                
+                // Return the updated court with pricing configurations
+                return await GetCourtByIdAsync(id);
             }
             catch (Exception ex)
             {
@@ -144,7 +189,9 @@ namespace BadmintonBooking.API.Services
         {
             try
             {
-                var court = await _context.Courts.FindAsync(id);
+                var court = await _context.Courts
+                    .Include(c => c.PricingConfigurations)
+                    .FirstOrDefaultAsync(c => c.Id == id);
                 
                 if (court == null)
                     return false;
@@ -155,6 +202,12 @@ namespace BadmintonBooking.API.Services
                 if (hasBookings)
                 {
                     throw new InvalidOperationException("Cannot delete court with existing bookings");
+                }
+                
+                // Remove pricing configurations first
+                if (court.PricingConfigurations != null && court.PricingConfigurations.Any())
+                {
+                    _context.PricingConfigurations.RemoveRange(court.PricingConfigurations);
                 }
                 
                 _context.Courts.Remove(court);

@@ -24,6 +24,12 @@
           "build/netstandard1.0/coverlet.collector.targets": {}
         }
       },
+      "JunitXml.TestLogger/3.0.134": {
+        "type": "package",
+        "build": {
+          "build/netstandard1.5/JUnitXml.TestLogger.props": {}
+        }
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.0": {
         "type": "package",
         "dependencies": {
@@ -2383,6 +2389,23 @@
         "coverlet-icon.png",
         "coverlet.collector.6.0.0.nupkg.sha512",
         "coverlet.collector.nuspec"
+      ]
+    },
+    "JunitXml.TestLogger/3.0.134": {
+      "sha512": "KoZInijT7rUEXGEOGUQfzLBZFaA65A7g6AhosHCI/aPuqxYMq40wUOO3kynor8QQhbgU+lpLFmhAxNb3+JoCfQ==",
+      "type": "package",
+      "path": "junitxml.testlogger/3.0.134",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/_common/Microsoft.VisualStudio.TestPlatform.Extension.JUnit.Xml.TestAdapter.dll",
+        "build/_common/Microsoft.VisualStudio.TestPlatform.Extension.JUnit.Xml.TestLogger.dll",
+        "build/_common/Spekt.TestLogger.dll",
+        "build/net46/JUnitXml.TestLogger.props",
+        "build/netstandard1.5/JUnitXml.TestLogger.props",
+        "junitxml.testlogger.3.0.134.nupkg.sha512",
+        "junitxml.testlogger.nuspec",
+        "packageIcon.png"
       ]
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.0": {
@@ -7171,6 +7194,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "BadmintonBooking.API >= 1.0.0",
+      "JunitXml.TestLogger >= 3.0.134",
       "Microsoft.EntityFrameworkCore.InMemory >= 8.0.0",
       "Microsoft.NET.Test.Sdk >= 17.6.0",
       "Moq >= 4.20.72",
@@ -7220,6 +7244,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "JunitXml.TestLogger": {
+            "target": "Package",
+            "version": "[3.0.134, )"
+          },
           "Microsoft.EntityFrameworkCore.InMemory": {
             "target": "Package",
             "version": "[8.0.0, )"

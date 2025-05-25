@@ -184,5 +184,127 @@ namespace BadmintonBooking.API.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CourtResponse>> UpdateCourt(int id, [FromBody] UpdateCourtRequest request)
+        {
+            try
+            {
+                // Get user ID from claims
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+                {
+                    return Unauthorized(new { error = "Invalid user authentication" });
+                }
+
+                // Get the court to check ownership
+                var existingCourt = await _courtService.GetCourtByIdAsync(id);
+                if (existingCourt == null)
+                {
+                    return NotFound(new { error = "Court not found" });
+                }
+
+                // Check if user is facility owner
+                bool isOwner = await _facilityService.IsFacilityOwnerAsync(existingCourt.FacilityId, userId);
+                if (!isOwner)
+                {
+                    return Forbid();
+                }
+
+                // Validate the request
+                if (string.IsNullOrWhiteSpace(request.Name))
+                {
+                    return BadRequest(new { error = "Court name is required" });
+                }
+
+                if (request.PricingConfigurations == null || !request.PricingConfigurations.Any())
+                {
+                    return BadRequest(new { error = "At least one pricing configuration is required" });
+                }
+
+                // Process pricing configurations
+                var pricingConfigs = new List<PricingConfigurationRequest>();
+                foreach (var config in request.PricingConfigurations)
+                {
+                    pricingConfigs.Add(new PricingConfigurationRequest
+                    {
+                        DayOfWeek = config.DayOfWeek,
+                        StartTime = config.StartTime,
+                        EndTime = config.EndTime,
+                        Price = config.Price,
+                        HourlyRate = config.HourlyRate
+                    });
+                }
+
+                // Update court
+                var updatedCourt = await _courtService.UpdateCourtAsync(id, request.Name, pricingConfigs);
+
+                // Map to response
+                var response = new CourtResponse
+                {
+                    Id = updatedCourt.Id,
+                    Name = updatedCourt.Name,
+                    FacilityId = updatedCourt.FacilityId,
+                    OwnerId = updatedCourt.OwnerId,
+                    IsActive = updatedCourt.IsActive,
+                    CreatedAt = updatedCourt.CreatedAt,
+                    UpdatedAt = updatedCourt.UpdatedAt,
+                    PricingConfigurations = updatedCourt.PricingConfigurations?.Select(pc => new PricingConfigurationResponse
+                    {
+                        Id = pc.Id,
+                        DayOfWeek = pc.DayOfWeek,
+                        StartTime = pc.StartTime,
+                        EndTime = pc.EndTime,
+                        Price = pc.Price,
+                        IsActive = pc.IsActive
+                    }).ToList()
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating court");
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCourt(int id)
+        {
+            try
+            {
+                // Get user ID from claims
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+                {
+                    return Unauthorized(new { error = "Invalid user authentication" });
+                }
+
+                // Get the court to check ownership
+                var existingCourt = await _courtService.GetCourtByIdAsync(id);
+                if (existingCourt == null)
+                {
+                    return NotFound(new { error = "Court not found" });
+                }
+
+                // Check if user is facility owner
+                bool isOwner = await _facilityService.IsFacilityOwnerAsync(existingCourt.FacilityId, userId);
+                if (!isOwner)
+                {
+                    return Forbid();
+                }
+
+                // Delete court
+                await _courtService.DeleteCourtAsync(id);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting court");
+                return BadRequest(new { error = ex.Message });
+            }
+        }
     }
 } 

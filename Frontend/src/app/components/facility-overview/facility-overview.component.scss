@@ -1,0 +1,202 @@
+.facility-overview-container {
+  @apply max-w-7xl mx-auto px-4 py-6;
+}
+
+.header {
+  @apply flex justify-between items-center mb-8;
+  
+  .title {
+    @apply text-3xl font-bold text-gray-900;
+  }
+  
+  .create-btn {
+    @apply flex items-center gap-2 px-4 py-2 text-sm font-medium;
+  }
+}
+
+// Loading State
+.loading-container {
+  @apply flex flex-col items-center justify-center py-20;
+  
+  .loading-spinner {
+    @apply w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4;
+  }
+  
+  p {
+    @apply text-gray-600;
+  }
+}
+
+// Error State
+.error-container {
+  @apply flex justify-center py-20;
+  
+  .error-card {
+    @apply bg-white rounded-lg shadow-md p-8 text-center max-w-md;
+    
+    .error-icon {
+      @apply w-16 h-16 text-red-500 mx-auto mb-4;
+    }
+    
+    h3 {
+      @apply text-xl font-semibold text-gray-900 mb-2;
+    }
+    
+    p {
+      @apply text-gray-600 mb-4;
+    }
+  }
+}
+
+// Empty State
+.empty-container {
+  @apply flex justify-center py-20;
+  
+  .empty-card {
+    @apply bg-white rounded-lg shadow-md p-8 text-center max-w-md;
+    
+    .empty-icon {
+      @apply w-16 h-16 text-gray-400 mx-auto mb-4;
+    }
+    
+    h3 {
+      @apply text-xl font-semibold text-gray-900 mb-2;
+    }
+    
+    p {
+      @apply text-gray-600 mb-6;
+    }
+  }
+}
+
+// Facilities Grid
+.facilities-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.facility-card {
+  @apply bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer border border-gray-200 overflow-hidden;
+  
+  &:hover:not(.menu-active) {
+    @apply transform -translate-y-1;
+  }
+  
+  &.menu-active {
+    @apply shadow-lg;
+  }
+}
+
+.card-header {
+  @apply flex justify-between items-start p-6 pb-4;
+  
+  .facility-name {
+    @apply text-xl font-semibold text-gray-900 flex-1 mr-3;
+  }
+  
+  .menu-container {
+    @apply relative;
+    
+    .menu-btn {
+      @apply p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 text-gray-500 hover:text-gray-700;
+      
+      &.active {
+        @apply bg-gray-100 text-gray-700;
+      }
+      
+      svg {
+        @apply w-5 h-5;
+      }
+    }
+    
+    .dropdown-menu {
+      @apply absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 min-w-48;
+      
+      .menu-item {
+        @apply flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150;
+        
+        .menu-item-icon {
+          @apply w-4 h-4 text-gray-500;
+        }
+        
+        &:hover .menu-item-icon {
+          @apply text-gray-700;
+        }
+      }
+    }
+  }
+}
+
+.card-content {
+  @apply px-6 pb-4;
+  
+  .facility-info {
+    @apply space-y-3;
+    
+    .info-item {
+      @apply flex items-start gap-3;
+      
+      .info-icon {
+        @apply w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0;
+      }
+      
+      .info-text {
+        @apply text-gray-600 text-sm;
+      }
+      
+      &.description .info-text {
+        @apply text-gray-500;
+      }
+    }
+  }
+}
+
+.card-footer {
+  @apply flex justify-between items-center px-6 py-4 bg-gray-50 border-t border-gray-100;
+  
+  .created-date {
+    @apply text-xs text-gray-500;
+  }
+  
+  .card-actions {
+    .view-courts-text {
+      @apply text-xs text-blue-600 font-medium;
+    }
+  }
+}
+
+// Overlay for closing menu
+.overlay {
+  @apply fixed inset-0 z-40;
+}
+
+// Button Styles
+.btn-primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center gap-2;
+  
+  svg {
+    @apply w-4 h-4;
+  }
+}
+
+.btn-secondary {
+  @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .header {
+    @apply flex-col gap-4 items-stretch;
+    
+    .create-btn {
+      @apply justify-center;
+    }
+  }
+  
+  .facilities-grid {
+    @apply grid-cols-1;
+  }
+  
+  .facility-card {
+    @apply mx-2;
+  }
+} 
