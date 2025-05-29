@@ -46,7 +46,7 @@ pipelines:
                 - cd Frontend
                 - npm install -g @angular/cli # Install Angular CLI globally or ensure it's a dev dependency
                 - npm install
-                - ng test --watch=false --browsers=ChromeHeadless --code-coverage
+                - ng test --watch=false --browsers=ChromeHeadless --code-coverage --no-sandbox
               artifacts:
                 - Frontend/coverage/** # Adjust artifact path based on your coverage reporter
       
