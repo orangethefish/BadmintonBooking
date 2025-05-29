@@ -127,3 +127,6 @@
 /home/orange/Documents/badmintonbooking/Backend.Tests/obj/Debug/net8.0/Backend.Tests.pdb
 /home/orange/Documents/badmintonbooking/Backend.Tests/obj/Debug/net8.0/Backend.Tests.genruntimeconfig.cache
 /home/orange/Documents/badmintonbooking/Backend.Tests/obj/Debug/net8.0/ref/Backend.Tests.dll
+/home/orange/Documents/badmintonbooking/Backend.Tests/bin/Debug/net8.0/Microsoft.VisualStudio.TestPlatform.Extension.JUnit.Xml.TestLogger.dll
+/home/orange/Documents/badmintonbooking/Backend.Tests/bin/Debug/net8.0/Microsoft.VisualStudio.TestPlatform.Extension.JUnit.Xml.TestAdapter.dll
+/home/orange/Documents/badmintonbooking/Backend.Tests/bin/Debug/net8.0/Spekt.TestLogger.dll
