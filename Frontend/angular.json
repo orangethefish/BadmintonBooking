@@ -90,6 +90,8 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "karmaConfig": "karma.conf.js",
+            "browsers": "ChromeHeadlessNoSandbox",
             "polyfills": [
               "zone.js",
               "zone.js/testing",
@@ -111,5 +113,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
