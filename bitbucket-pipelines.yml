@@ -11,9 +11,14 @@ pipelines:
           services:
             - docker
           script:
+            - export DOCKER_COMPOSE_VERSION=1.18.0
+            - export DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)
+            - curl -L $DOCKER_COMPOSE_URL > docker-compose
+            - chmod +x docker-compose
+            - mv docker-compose /usr/local/bin
             - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
             # Build both images
-            - docker compose build
+            - docker-compose build --force-rm --no-cache --pull
             # Tag and push frontend
             - docker tag src_frontend ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
             - docker push ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
