@@ -2,11 +2,12 @@
   <div class="max-w-3xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
     <div class="p-6 md:p-8">
       <div class="mb-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3" i18n>Create New Facility</h1>
-        <div class="w-full bg-gray-200 rounded-full h-2.5">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">{{ pageTitle }}</h1>
+        <div *ngIf="!isEditMode" class="w-full bg-gray-200 rounded-full h-2.5">
           <div class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500 ease-out" [style.width.%]="50"></div>
         </div>
-        <p class="text-sm text-gray-600 mt-2" i18n>Step 1 of 2: Facility Details</p>
+        <p *ngIf="!isEditMode" class="text-sm text-gray-600 mt-2" i18n>Step 1 of 2: Facility Details</p>
+        <p *ngIf="isEditMode" class="text-sm text-gray-600 mt-2" i18n>Update your facility information</p>
       </div>
 
       <form [formGroup]="facilityForm" (ngSubmit)="onSubmit()" class="space-y-6">
@@ -97,7 +98,15 @@
           {{ error }}
         </div>
 
-        <div class="pt-5 flex justify-end">
+        <div class="pt-5 flex justify-end gap-3">
+          <button
+            *ngIf="isEditMode"
+            type="button"
+            (click)="onCancel()"
+            class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            <span i18n>Cancel</span>
+          </button>
           <button
             type="submit"
             [disabled]="facilityForm.invalid || isLoading"
@@ -109,7 +118,7 @@
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             </span>
-            <span i18n>Next: Add Courts</span>
+            <span>{{ submitButtonText }}</span>
           </button>
         </div>
       </form>

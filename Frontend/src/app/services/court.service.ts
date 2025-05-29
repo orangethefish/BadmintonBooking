@@ -18,6 +18,11 @@ export interface BatchCreateCourtRequest {
   pricingConfigurations: PricingConfigurationRequest[];
 }
 
+export interface UpdateCourtRequest {
+  name: string;
+  pricingConfigurations: PricingConfigurationRequest[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,6 +41,10 @@ export class CourtService {
 
   updateCourt(id: number, court: Partial<Court>): Observable<Court> {
     return this.http.put<Court>(`${this.apiUrl}/${id}`, court);
+  }
+
+  updateCourtWithPricing(id: number, request: UpdateCourtRequest): Observable<Court> {
+    return this.http.put<Court>(`${this.apiUrl}/${id}`, request);
   }
 
   deleteCourt(id: number): Observable<void> {

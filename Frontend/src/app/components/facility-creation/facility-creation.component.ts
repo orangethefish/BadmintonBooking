@@ -1,11 +1,11 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FacilityService } from '../../services/facility.service';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ResolveUrlResponse } from '../../models/facility.model';
+import { ResolveUrlResponse, Facility } from '../../models/facility.model';
 
 @Component({
   selector: 'app-facility-creation',
@@ -25,11 +25,17 @@ export class FacilityCreationComponent implements OnInit {
     { lat: 10.769444, lng: 106.681944 }
   ];
   processingUrl = false;
+  
+  // Edit mode properties
+  isEditMode = false;
+  facilityId: number | null = null;
+  originalFacility: Facility | null = null;
 
   constructor(
     private fb: FormBuilder,
     private facilityService: FacilityService,
     private router: Router,
+    private route: ActivatedRoute,
     private http: HttpClient
   ) {
     this.facilityForm = this.fb.group({
@@ -44,7 +50,57 @@ export class FacilityCreationComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Check if we're in edit mode
+    this.route.queryParams.subscribe(params => {
+      if (params['facilityId']) {
+        this.facilityId = +params['facilityId'];
+        this.isEditMode = true;
+        this.loadFacilityForEdit();
+      }
+    });
+  }
+
+  async loadFacilityForEdit(): Promise<void> {
+    if (!this.facilityId) return;
+    
+    this.isLoading = true;
+    this.error = null;
+    
+    try {
+      const facility = await this.facilityService.getFacility(this.facilityId).toPromise();
+      this.originalFacility = facility || null;
+      
+      if (this.originalFacility) {
+        // Populate form with existing data
+        this.facilityForm.patchValue({
+          name: this.originalFacility.name,
+          address: this.originalFacility.address,
+          phoneNumber: this.originalFacility.phoneNumber,
+          description: this.originalFacility.description || '',
+          mapsUrl: this.originalFacility.mapsUrl || '',
+          latitude: this.originalFacility.courtLatitude || '',
+          longitude: this.originalFacility.courtLongitude || '',
+          placeId: this.originalFacility.placeId || ''
+        });
+        
+        // Update map if coordinates exist
+        if (this.originalFacility.courtLatitude && this.originalFacility.courtLongitude) {
+          const lat = parseFloat(this.originalFacility.courtLatitude);
+          const lng = parseFloat(this.originalFacility.courtLongitude);
+          
+          this.center = { lat, lng };
+          this.markers = [{ lat, lng }];
+          this.zoom = 15;
+        }
+      }
+    } catch (err: any) {
+      this.error = err.error?.message || 'Failed to load facility data';
+      console.error('Error loading facility:', err);
+    } finally {
+      this.isLoading = false;
+    }
+  }
 
   async processMapUrl() {
     const mapsUrl = this.facilityForm.get('mapsUrl')?.value;
@@ -128,14 +184,38 @@ export class FacilityCreationComponent implements OnInit {
           placeId: formData.placeId
         };
         
+        if (this.isEditMode && this.facilityId) {
+          // Update existing facility
+          await this.facilityService.updateFacility(this.facilityId, facilityData).toPromise();
+          // Navigate back to facility overview
+          this.router.navigate(['/facility/overview']);
+        } else {
+          // Create new facility
         const facility = await this.facilityService.createFacility(facilityData).toPromise();
         // Navigate to court creation with the new facility ID
         this.router.navigate(['court/create'], { queryParams: { facilityId: facility?.id }});
+        }
       } catch (err: any) {
-        this.error = err.error?.message || 'Failed to create facility';
+        this.error = err.error?.message || `Failed to ${this.isEditMode ? 'update' : 'create'} facility`;
       } finally {
         this.isLoading = false;
       }
     }
+  }
+
+  onCancel(): void {
+    if (this.isEditMode) {
+      this.router.navigate(['/facility/overview']);
+    } else {
+      this.router.navigate(['/facility/overview']);
+    }
+  }
+
+  get pageTitle(): string {
+    return this.isEditMode ? 'Edit Facility' : 'Create New Facility';
+  }
+
+  get submitButtonText(): string {
+    return this.isEditMode ? 'Update Facility' : 'Create Facility';
   }
 } 
