@@ -19,9 +19,9 @@ pipelines:
             - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
             # Build both images
             - docker-compose build --force-rm --no-cache --pull
-            - docker push $DOCKER_HUB_USER/badmintonbooking-frontend:latest
+            - docker push "$DOCKER_HUB_USER"/badmintonbooking-frontend:latest
             # Tag and push backend
-            - docker push $DOCKER_HUB_USER/badmintonbooking-backend:latest
+            - docker push "$DOCKER_HUB_USER"/badmintonbooking-backend:latest
 
       - step:
           name: Mirror to GitHub
