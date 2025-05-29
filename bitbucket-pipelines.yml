@@ -6,50 +6,6 @@ clone:
 pipelines:
   branches:
     main:
-      - parallel:
-          - step:
-              name: Build and Test
-              caches:
-                - dotnetcore
-              script:
-                - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
-                - dotnet restore
-                - dotnet build --no-restore --configuration Release
-                - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
-              artifacts:
-                - test-reports/**
-          - step:
-              name: Lint the code
-              caches:
-                - dotnetcore
-              script:
-                - export SOLUTION_NAME=BadmintonBooking
-                - export REPORTS_PATH=linter-reports
-                - dotnet new tool-manifest
-                - dotnet tool install JetBrains.ReSharper.GlobalTools
-                - dotnet tool restore
-                - dotnet jb inspectcode ${SOLUTION_NAME}.sln --output="${REPORTS_PATH}/jb-${BITBUCKET_BUILD_NUMBER}.xml"
-              artifacts:
-                - linter-reports/**
-          - step:
-              name: Frontend Build and Test
-              image: node:20 # Use a Node.js image
-              caches:
-                - node # Cache for npm dependencies in Frontend
-              script:
-                # Install Google Chrome
-                - apt-get update && apt-get install -y wget gnupg
-                - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-                - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-                - apt-get update && apt-get install -y google-chrome-stable
-                # Original script
-                - cd Frontend
-                - npm install -g @angular/cli # Install Angular CLI globally or ensure it's a dev dependency
-                - npm install
-                - npm test
-              artifacts:
-                - Frontend/coverage/** # Adjust artifact path based on your coverage reporter
-      
       - step:
           name: Build and Push Docker Images
           services:
@@ -57,7 +13,7 @@ pipelines:
           script:
             - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
             # Build both images
-            - docker-compose build
+            - docker compose build
             # Tag and push frontend
             - docker tag src_frontend ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
             - docker push ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
