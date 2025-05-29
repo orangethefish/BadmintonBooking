@@ -9,6 +9,7 @@
       "Backend.Tests/1.0.0": {
         "dependencies": {
           "BadmintonBooking.API": "1.0.0",
+          "JunitXml.TestLogger": "3.0.134",
           "Microsoft.EntityFrameworkCore.InMemory": "8.0.0",
           "Microsoft.NET.Test.Sdk": "17.6.0",
           "Moq": "4.20.72",
@@ -32,6 +33,7 @@
         }
       },
       "coverlet.collector/6.0.0": {},
+      "JunitXml.TestLogger/3.0.134": {},
       "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.0": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "7.0.3"
@@ -1339,6 +1341,13 @@
       "sha512": "sha512-tW3lsNS+dAEII6YGUX/VMoJjBS1QvsxqJeqLaJXub08y1FSjasFPtQ4UBUsudE9PNrzLjooClMsPtY2cZLdXpQ==",
       "path": "coverlet.collector/6.0.0",
       "hashPath": "coverlet.collector.6.0.0.nupkg.sha512"
+    },
+    "JunitXml.TestLogger/3.0.134": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KoZInijT7rUEXGEOGUQfzLBZFaA65A7g6AhosHCI/aPuqxYMq40wUOO3kynor8QQhbgU+lpLFmhAxNb3+JoCfQ==",
+      "path": "junitxml.testlogger/3.0.134",
+      "hashPath": "junitxml.testlogger.3.0.134.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.0": {
       "type": "package",

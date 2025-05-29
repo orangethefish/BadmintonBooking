@@ -3042,7 +3042,7 @@
     ]
   },
   "packageFolders": {
-    "/home/orange/.nuget/packages/": {}
+    "/root/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
@@ -3050,11 +3050,11 @@
       "projectUniqueName": "/home/orange/Documents/badmintonbooking/Backend/BadmintonBooking.API.csproj",
       "projectName": "BadmintonBooking.API",
       "projectPath": "/home/orange/Documents/badmintonbooking/Backend/BadmintonBooking.API.csproj",
-      "packagesPath": "/home/orange/.nuget/packages/",
+      "packagesPath": "/root/.nuget/packages/",
       "outputPath": "/home/orange/Documents/badmintonbooking/Backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/orange/.nuget/NuGet/NuGet.Config"
+        "/root/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
