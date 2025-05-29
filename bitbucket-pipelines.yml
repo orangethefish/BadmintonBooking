@@ -4,52 +4,65 @@ clone:
   depth: full
 
 pipelines:
-  default:
-    - parallel:
-        - step:
-            name: Build and Test
-            caches:
-              - dotnetcore
-            script:
-              - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
-              - dotnet restore
-              - dotnet build --no-restore --configuration Release
-              - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
-            artifacts:
-              - test-reports/**
-        - step:
-            name: Lint the code
-            caches:
-              - dotnetcore
-            script:
-              - export SOLUTION_NAME=BadmintonBooking
-              - export REPORTS_PATH=linter-reports
-              - dotnet new tool-manifest
-              - dotnet tool install JetBrains.ReSharper.GlobalTools
-              - dotnet tool restore
-              - dotnet jb inspectcode ${SOLUTION_NAME}.sln --output="${REPORTS_PATH}/jb-${BITBUCKET_BUILD_NUMBER}.xml"
-            artifacts:
-              - linter-reports/**
-    
-    - step:
-        name: Build and Push Docker Images
-        services:
-          - docker
-        script:
-          - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
-          # Build both images
-          - docker-compose build
-          # Tag and push frontend
-          - docker tag src_frontend ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
-          - docker push ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
-          # Tag and push backend
-          - docker tag src_backend ${DOCKER_HUB_USER}/badmintonbooking-backend:${BITBUCKET_BUILD_NUMBER}
-          - docker push ${DOCKER_HUB_USER}/badmintonbooking-backend:${BITBUCKET_BUILD_NUMBER}
+  branches:
+    main:
+      - parallel:
+          - step:
+              name: Build and Test
+              caches:
+                - dotnetcore
+              script:
+                - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
+                - dotnet restore
+                - dotnet build --no-restore --configuration Release
+                - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
+              artifacts:
+                - test-reports/**
+          - step:
+              name: Lint the code
+              caches:
+                - dotnetcore
+              script:
+                - export SOLUTION_NAME=BadmintonBooking
+                - export REPORTS_PATH=linter-reports
+                - dotnet new tool-manifest
+                - dotnet tool install JetBrains.ReSharper.GlobalTools
+                - dotnet tool restore
+                - dotnet jb inspectcode ${SOLUTION_NAME}.sln --output="${REPORTS_PATH}/jb-${BITBUCKET_BUILD_NUMBER}.xml"
+              artifacts:
+                - linter-reports/**
+          - step:
+              name: Frontend Build and Test
+              image: node:20 # Use a Node.js image
+              caches:
+                - node # Cache for npm dependencies in Frontend
+              script:
+                - cd Frontend
+                - npm install -g @angular/cli # Install Angular CLI globally or ensure it's a dev dependency
+                - npm install
+                - ng test --browsers ChromeHeadlessCI --watch=false --code-coverage
+              artifacts:
+                - Frontend/coverage/** # Adjust artifact path based on your coverage reporter
+      
+      - step:
+          name: Build and Push Docker Images
+          services:
+            - docker
+          script:
+            - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+            # Build both images
+            - docker-compose build
+            # Tag and push frontend
+            - docker tag src_frontend ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
+            - docker push ${DOCKER_HUB_USER}/badmintonbooking-frontend:${BITBUCKET_BUILD_NUMBER}
+            # Tag and push backend
+            - docker tag src_backend ${DOCKER_HUB_USER}/badmintonbooking-backend:${BITBUCKET_BUILD_NUMBER}
+            - docker push ${DOCKER_HUB_USER}/badmintonbooking-backend:${BITBUCKET_BUILD_NUMBER}
 
-    - step:
-        name: Mirror to GitHub
-        image: atlassian/default-image:4
-        script:
-          - git fetch --all
-          - git fetch --tags
-          - git push --mirror git@github.com:orangethefish/BadmintonBooking.git
+      - step:
+          name: Mirror to GitHub
+          image: atlassian/default-image:4
+          script:
+            - git fetch --all
+            - git fetch --tags
+            - git push --mirror git@github.com:orangethefish/BadmintonBooking.git

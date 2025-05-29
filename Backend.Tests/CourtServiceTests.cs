@@ -242,7 +242,8 @@ namespace Backend.Tests
 
             var updateCourtRequest = new UpdateCourtRequest
             {
-                Name = "Updated Court"
+                Name = "Updated Court",
+                PricingConfigurations = new List<PricingConfigurationRequest>() // Initialize with an empty list or mock data
             };
 
             using (var context = CreateContext())
@@ -256,10 +257,11 @@ namespace Backend.Tests
                 var courtService = new CourtService(context, _mockFacilityService.Object);
 
                 // Act
-                var result = await courtService.UpdateCourtAsync(court.Id, updateCourtRequest);
+                var result = await courtService.UpdateCourtAsync(court.Id, updateCourtRequest.Name, updateCourtRequest.PricingConfigurations);
 
                 // Assert
-                Assert.True(result);
+                Assert.NotNull(result);
+                Assert.Equal(updateCourtRequest.Name, result.Name);
             }
 
             // Verify court was updated in database
